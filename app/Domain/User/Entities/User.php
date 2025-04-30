@@ -6,6 +6,7 @@ use App\Domain\User\Entities\Profiles\AdminProfile;
 use App\Domain\User\Entities\Profiles\UserProfile;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
+use App\Domain\User\Entities\ValueObjects\Attributes\UserName;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Exceptions\UserException;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +18,7 @@ class User implements \JsonSerializable
 
     public function __construct(
         public readonly UserId $id,
-        public readonly string $name,
+        public readonly UserName $name,
         public readonly UserEmail $email,
         public readonly UserPassword $password
     ) {}
@@ -29,7 +30,7 @@ class User implements \JsonSerializable
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->name->get();
     }
 
     public function getProfile(): UserProfile|null
@@ -43,7 +44,7 @@ class User implements \JsonSerializable
     }
 
     /**
-     * @throws Exception
+     * @throws UserException
      * */
     public function assignProfile(UserProfile $profile, User $user): void
     {
@@ -78,20 +79,18 @@ class User implements \JsonSerializable
 
     /* sort of a mini DTO */
     public function jsonSerialize(): array
-{
-    return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'email' => $this->email,
-    ];
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+        ];
+    }
 
-}
-
-    /* work on this*/
     public function toString(): string
     {
         $userid = $this->id->get();
-        return "$userid, $this->name";
+        return "[id: $userid, name: $this->name, email: $this->email]";
     }
 }
 

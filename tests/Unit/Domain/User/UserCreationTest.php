@@ -7,6 +7,7 @@ use App\Domain\User\Entities\Profiles\IndividualProfile;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
+use App\Domain\User\Entities\ValueObjects\Attributes\UserName;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Enums\UserProfileType;
 use App\Domain\User\Exceptions\UserException;
@@ -16,7 +17,7 @@ class UserCreationTest extends TestCase
 {
     public function test_user_creation_test(): void
     {
-        $user = new User(UserId::fromString("888fa974-50d0-43f8-b0c4-d28385c852d1"), 'User', new UserEmail('user@user.pt'), new UserPassword("12345678"));
+        $user = new User(UserId::fromString("888fa974-50d0-43f8-b0c4-d28385c852d1"), new UserName("User"), new UserEmail('user@user.pt'), new UserPassword("12345678.A"));
 
         /* id verification */
         $this->assertTrue($user->getId()->equals("888fa974-50d0-43f8-b0c4-d28385c852d1"));
@@ -34,7 +35,7 @@ class UserCreationTest extends TestCase
      */
     public function test_admin_can_assign_profile_to_user(): void
     {
-        $admin = new User(UserId::generate(), 'Admin', new UserEmail('admin@admin.pt'), new UserPassword('12345678'));
+        $admin = new User(UserId::generate(), new UserName("Admin"), new UserEmail('admin@admin.pt'), new UserPassword("12345678.A"));
         /* set admins profile as Admin */
         $admin->forceAssignProfile(new AdminProfile(), $admin);
 
@@ -50,10 +51,10 @@ class UserCreationTest extends TestCase
      */
     public function test_individual_can_assign_profile_to_user(): void
     {
-        $admin = new User(UserId::generate(), 'Admin', new UserEmail('admin@admin.pt'), new UserPassword('12345678'));
+        $admin = new User(UserId::generate(), new UserName("Admin"), new UserEmail('admin@admin.pt'), new UserPassword("12345678.A"));
         $admin->forceAssignProfile(new AdminProfile(), $admin);
 
-        $user = new User(UserId::generate(), 'Example User', new UserEmail('user@user.pt'), new UserPassword('12345678'));
+        $user = new User(UserId::generate(), new UserName('Example User'), new UserEmail('user@user.pt'), new UserPassword("12345678.A"));
         $admin->assignProfile(new IndividualProfile(), $user);
 
         /* test if the user's profile was set */
