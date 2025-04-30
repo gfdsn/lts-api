@@ -15,4 +15,9 @@ class UserException extends \Exception
         return new self("The User already has a profile.");
     }
 
+    public static function productionProfileAssignation(): self
+    {
+        return new self("Cannot assign profile directly in production.");
+    }
+
 }

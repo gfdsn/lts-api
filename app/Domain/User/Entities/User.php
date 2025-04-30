@@ -8,6 +8,7 @@ use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Exceptions\UserException;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class User implements \JsonSerializable
@@ -44,34 +45,47 @@ class User implements \JsonSerializable
     /**
      * @throws Exception
      * */
-    public function assignProfile(UserProfile $profile): void
+    public function assignProfile(UserProfile $profile, User $user): void
     {
         // check if user's profile is admin
-        if (!(auth()->user->profile instanceof AdminProfile))
+        if (!($this->profile instanceof AdminProfile))
             throw UserException::noPermission();
 
         // check if target user already has a profile
-        if (isset($this->profile))
+        if (isset($user->profile))
             throw UserException::profileAlreadyAssigned();
 
-        $this->profile = $profile;
+        $user->profile = $profile;
     }
 
+    /**
+     * @throws UserException
+     */
+    public function forceAssignProfile(UserProfile $profile, User $user): void
+    {
+        if (app()->isProduction())
+            throw UserException::productionProfileAssignation();
+
+        Log::info("Force assigning profile: " . get_class($profile) . " for user ID: {$this->id->get()}");
+
+        $user->profile = $profile;
+    }
 
     public function can(string $action): bool
     {
         return $this->profile->can($action); // return if user profile has permission
     }
 
+    /* sort of a mini DTO */
     public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-        ];
+{
+    return [
+        'id' => $this->id,
+        'name' => $this->name,
+        'email' => $this->email,
+    ];
 
-    }
+}
 
     /* work on this*/
     public function toString(): string
