@@ -2,7 +2,9 @@
 
 namespace App\Domain\User\Entities;
 
+use App\Application\DTOs\UserDTO;
 use App\Domain\User\Entities\Profiles\AdminProfile;
+use App\Domain\User\Entities\Profiles\IndividualProfile;
 use App\Domain\User\Entities\Profiles\UserProfile;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
@@ -10,18 +12,20 @@ use App\Domain\User\Entities\ValueObjects\Attributes\UserName;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Exceptions\UserException;
 use Illuminate\Support\Facades\Log;
-use Exception;
 
 class User implements \JsonSerializable
 {
-    private ?UserProfile $profile = null;
+    private ?UserProfile $profile;
 
     public function __construct(
         public readonly UserId $id,
         public readonly UserName $name,
         public readonly UserEmail $email,
         public readonly UserPassword $password
-    ) {}
+    ) {
+        // By default, users should be Individual
+        $this->profile = new IndividualProfile();
+    }
 
     public function getId(): UserId
     {
@@ -33,7 +37,7 @@ class User implements \JsonSerializable
         return $this->name->get();
     }
 
-    public function getProfile(): UserProfile|null
+    public function getProfile(): UserProfile
     {
         return $this->profile;
     }
@@ -51,10 +55,6 @@ class User implements \JsonSerializable
         // check if user's profile is admin
         if (!($this->profile instanceof AdminProfile))
             throw UserException::noPermission();
-
-        // check if target user already has a profile
-        if (isset($user->profile))
-            throw UserException::profileAlreadyAssigned();
 
         $user->profile = $profile;
     }
@@ -91,6 +91,16 @@ class User implements \JsonSerializable
     {
         $userid = $this->id->get();
         return "[id: $userid, name: $this->name, email: $this->email]";
+    }
+
+    public static function fromDto(UserDTO $dto): User
+    {
+        return new self(
+            UserId::generate(),
+            new UserName($dto->getName()),
+            new UserEmail($dto->getEmail()),
+            new UserPassword($dto->getPassword())
+        );
     }
 }
 
