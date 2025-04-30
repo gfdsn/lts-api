@@ -26,8 +26,8 @@ class UserCreationTest extends TestCase
         /* user name verification */
         $this->assertEquals('User', $user->getName());
 
-        /* user profile not set yet verification */
-        $this->assertNull($user->getProfile());
+        /* user profile set as individual by default */
+        $this->assertEquals("individual", $user->getProfileType());
     }
 
     /**
