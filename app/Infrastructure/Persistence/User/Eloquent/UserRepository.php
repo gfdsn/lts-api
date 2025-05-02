@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistence\User\Eloquent;
 
 use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepositoryInterface;
+use App\Http\Resources\UserResource;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Collection;

@@ -2,10 +2,12 @@
 
 namespace App\Domain\User\Services;
 
-use App\Application\DTOs\UserRegisterDTO;
+use App\Application\User\DTOs\UserRegisterDTO;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserException;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
+use App\Infrastructure\Persistence\User\Mappers\UserMapper;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Collection;
 
 class UserService
@@ -25,9 +27,9 @@ class UserService
      */
     public function register(UserRegisterDTO $userRegisterDTO): User
     {
-        $user = User::fromDto($userRegisterDTO);
+        $user = UserMapper::fromDto($userRegisterDTO);
 
-        /* more validations */
+        /* TODO: more validations */
         if ($this->userRepository->emailExists($user->getEmail())) {
             throw UserException::emailAlreadyExists();
         }

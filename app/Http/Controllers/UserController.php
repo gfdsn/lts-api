@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\DTOs\UserRegisterDTO;
-use App\Application\UseCases\User\ListAllUsersUseCase;
-use App\Application\UseCases\User\RegisterUserUseCase;
+use App\Application\User\DTOs\UserRegisterDTO;
+use App\Application\User\UseCases\ListAllUsersUseCase;
+use App\Application\User\UseCases\RegisterUserUseCase;
 use App\Domain\User\Exceptions\UserException;
 use App\Http\Requests\UserStoreRequest;
 use Illuminate\Http\JsonResponse;
@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 class UserController extends Controller
 {
 
-    public function index(ListAllUsersUseCase  $useCase): JsonResponse
+    public function index(ListAllUsersUseCase $useCase): JsonResponse
     {
         return response()->json($useCase->execute());
     }
@@ -32,6 +32,7 @@ class UserController extends Controller
 
         $useCase->execute($userPayload);
 
+        /* TODO: work on this */
         return response()->json(["bla bla bla ble ble ble, user created"]);
     }
 }

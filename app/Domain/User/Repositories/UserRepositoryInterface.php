@@ -3,7 +3,6 @@
 namespace App\Domain\User\Repositories;
 
 use App\Domain\User\Entities\User;
-use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
 use Illuminate\Support\Collection;
 
 interface UserRepositoryInterface

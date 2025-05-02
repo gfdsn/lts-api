@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Application\UseCases\User;
+namespace App\Application\User\UseCases;
 
-use App\Application\DTOs\UserRegisterDTO;
-use App\Domain\User\Entities\User;
+use App\Application\User\DTOs\UserRegisterDTO;
 use App\Domain\User\Exceptions\UserException;
 use App\Domain\User\Services\UserService;
 
