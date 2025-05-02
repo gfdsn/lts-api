@@ -7,6 +7,8 @@ use App\Application\User\UseCases\ListAllUsersUseCase;
 use App\Application\User\UseCases\RegisterUserUseCase;
 use App\Domain\User\Exceptions\UserException;
 use App\Http\Requests\UserStoreRequest;
+use App\Util\ResponseBuilder;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
@@ -14,7 +16,7 @@ class UserController extends Controller
 
     public function index(ListAllUsersUseCase $useCase): JsonResponse
     {
-        return response()->json($useCase->execute());
+        return ResponseBuilder::sendData($useCase->execute());
     }
 
     /**
@@ -32,7 +34,6 @@ class UserController extends Controller
 
         $useCase->execute($userPayload);
 
-        /* TODO: work on this */
-        return response()->json(["bla bla bla ble ble ble, user created"]);
+        return ResponseBuilder::success("User registered successfully", 201);
     }
 }

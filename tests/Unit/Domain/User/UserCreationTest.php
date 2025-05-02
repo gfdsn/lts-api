@@ -15,7 +15,7 @@ use Tests\TestCase;
 
 class UserCreationTest extends TestCase
 {
-    public function test_user_creation_test(): void
+    public function test_user_domain_object_creation_test(): void
     {
         $user = new User(UserId::fromString("888fa974-50d0-43f8-b0c4-d28385c852d1"), new UserName("User"), new UserEmail('user@user.pt'), new UserPassword("12345678.A"));
 
@@ -67,4 +67,5 @@ class UserCreationTest extends TestCase
         $this->expectExceptionMessage("a");
         $user->assignProfile(new AdminProfile(), $user);
     }
+
 }

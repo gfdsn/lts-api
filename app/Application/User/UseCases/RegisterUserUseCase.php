@@ -21,6 +21,7 @@ readonly class RegisterUserUseCase
         $user = $this->authService->register($userRegisterDTO);
 
         /* send a welcome email */
+        /* prob Brevo integration here */
         /* notify admins bla bla bla*/
     }
 
