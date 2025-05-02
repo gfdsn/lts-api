@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Application\DTOs\UserRegisterDTO;
+use App\Application\UseCases\User\ListAllUsersUseCase;
+use App\Application\UseCases\User\RegisterUserUseCase;
+use App\Domain\User\Exceptions\UserException;
+use App\Http\Requests\UserStoreRequest;
+use Illuminate\Http\JsonResponse;
+
+class UserController extends Controller
+{
+
+    public function index(ListAllUsersUseCase  $useCase): JsonResponse
+    {
+        return response()->json($useCase->execute());
+    }
+
+    /**
+     * @throws UserException
+     */
+    public function store(UserStoreRequest $request, RegisterUserUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $userPayload = new UserRegisterDTO(
+            $validated['name'],
+            $validated['email'],
+            $validated['password']
+        );
+
+        $useCase->execute($userPayload);
+
+        return response()->json(["bla bla bla ble ble ble, user created"]);
+    }
+}
