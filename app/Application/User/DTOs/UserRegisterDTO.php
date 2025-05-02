@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\DTOs;
+namespace App\Application\User\DTOs;
 
-readonly class UserDTO
+readonly class UserRegisterDTO
 {
     public function __construct(
         private string $name,

@@ -13,7 +13,7 @@ readonly class UserId
         $this->value = $id;
     }
 
-    public function get(): string
+    public function toString(): string
     {
         return $this->value;
     }
@@ -29,7 +29,7 @@ readonly class UserId
     {
         $valueAsUuid = self::fromString($testUuid);
 
-        return $this->value == $valueAsUuid->get();
+        return $this->value == $valueAsUuid->toString();
     }
     /* ... */
 }

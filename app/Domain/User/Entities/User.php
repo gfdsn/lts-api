@@ -2,7 +2,7 @@
 
 namespace App\Domain\User\Entities;
 
-use App\Application\DTOs\UserDTO;
+use App\Application\User\DTOs\UserRegisterDTO;
 use App\Domain\User\Entities\Profiles\AdminProfile;
 use App\Domain\User\Entities\Profiles\IndividualProfile;
 use App\Domain\User\Entities\Profiles\UserProfile;
@@ -37,6 +37,16 @@ class User implements \JsonSerializable
         return $this->name->get();
     }
 
+    public function getEmail(): string
+    {
+        return $this->email->get();
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password->get();
+    }
+
     public function getProfile(): UserProfile
     {
         return $this->profile;
@@ -64,10 +74,10 @@ class User implements \JsonSerializable
      */
     public function forceAssignProfile(UserProfile $profile, User $user): void
     {
-        if (app()->isProduction())
+        if (app()->isProduction()) // should only work outside of production, for test purposes
             throw UserException::productionProfileAssignation();
 
-        Log::info("Force assigning profile: " . get_class($profile) . " for user ID: {$this->id->get()}");
+        Log::info("Force assigning profile: " . get_class($profile) . " for user ID: {$this->id->toString()}");
 
         $user->profile = $profile;
     }
@@ -89,18 +99,7 @@ class User implements \JsonSerializable
 
     public function toString(): string
     {
-        $userid = $this->id->get();
-        return "[id: $userid, name: $this->name, email: $this->email]";
-    }
-
-    public static function fromDto(UserDTO $dto): User
-    {
-        return new self(
-            UserId::generate(),
-            new UserName($dto->getName()),
-            new UserEmail($dto->getEmail()),
-            new UserPassword($dto->getPassword())
-        );
+        return "[id: $this->id, name: $this->name, email: $this->email]";
     }
 }
 
