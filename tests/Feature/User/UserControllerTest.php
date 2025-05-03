@@ -3,14 +3,13 @@
 namespace Tests\Feature\User;
 
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
-use App\Http\Resources\UserResource;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
-    public function test_index_returns_all_users()
+    public function test_index_returns_all_users(): void
     {
         $repo = \Mockery::mock(UserRepository::class);
         $this->app->instance(UserRepository::class, $repo);

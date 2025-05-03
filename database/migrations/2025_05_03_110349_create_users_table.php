@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\User\Enums\UserProfileType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,6 +18,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId("profile_type_id")->constrained();
+
+            /*
+            $table->enum('account_type', array_column(UserProfileType::cases(), 'value'))
+                ->default(UserProfileType::INDIVIDUAL->value);
+            */
+
+            $table->boolean('newsletter');
             $table->timestamps();
         });
 

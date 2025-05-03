@@ -4,7 +4,6 @@ namespace App\Domain\User\Entities\ValueObjects;
 
 final class Permissions
 {
-
     public function __construct(
         private readonly array $perms
     ) {}

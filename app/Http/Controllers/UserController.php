@@ -8,12 +8,10 @@ use App\Application\User\UseCases\RegisterUserUseCase;
 use App\Domain\User\Exceptions\UserException;
 use App\Http\Requests\UserStoreRequest;
 use App\Util\ResponseBuilder;
-use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-
     public function index(ListAllUsersUseCase $useCase): JsonResponse
     {
         return ResponseBuilder::sendData($useCase->execute());
