@@ -10,13 +10,11 @@ use Illuminate\Support\Collection;
 
 class UserRepository implements UserRepositoryInterface
 {
-
     public function getAll(): Collection
     {
-        return UserModel::all();
+        return UserModel::with('profileType')->get();
     }
 
-    /* saves the new user to the database */
     public function save(User $user): void
     {
         $model = UserMapper::toModel($user);
@@ -38,5 +36,4 @@ class UserRepository implements UserRepositoryInterface
     {
         // TODO: Implement findByEmail() method.
     }*/
-
 }
