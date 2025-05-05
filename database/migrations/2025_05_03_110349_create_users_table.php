@@ -18,14 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->foreignId("profile_type_id")->constrained();
-
-            /*
-            $table->enum('account_type', array_column(UserProfileType::cases(), 'value'))
-                ->default(UserProfileType::INDIVIDUAL->value);
-            */
-
-            $table->boolean('newsletter');
+            $table->foreignId("profile_type_id")->default(1)->nullable()->constrained();
+            $table->boolean('newsletter')->default(0);
             $table->timestamps();
         });
 
