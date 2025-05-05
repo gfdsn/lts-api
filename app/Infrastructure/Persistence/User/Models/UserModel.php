@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\User\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserModel extends Model
 {
@@ -15,4 +16,9 @@ class UserModel extends Model
         'email',
         'password',
     ];
+
+    public function profileType(): BelongsTo
+    {
+        return $this->belongsTo(ProfileTypeModel::class);
+    }
 }

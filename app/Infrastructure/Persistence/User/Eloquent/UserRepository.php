@@ -12,7 +12,7 @@ class UserRepository implements UserRepositoryInterface
 {
     public function getAll(): Collection
     {
-        return UserModel::all();
+        return UserModel::with('profileType')->get();
     }
 
     public function save(User $user): void
