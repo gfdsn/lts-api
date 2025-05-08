@@ -2,7 +2,6 @@
 
 namespace App\Domain\User\Entities\ValueObjects\Attributes;
 
-use App\Domain\User\Entities\User;
 use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 
@@ -12,20 +11,25 @@ readonly class UserPassword
 
     public function __construct(string $password)
     {
-        if (!$this->validate($password))
-            throw new InvalidArgumentException("Password must be at least 8 characters, 1 Upper case, 1 Number and 1 Special letter.");
+        if (Hash::isHashed($password)){
+            $this->value = $password;
+        } else {
+            if (!$this->validate($password))
+                throw new InvalidArgumentException(
+                    "Password must be at least 8 characters, 1 Upper case, 1 Number and 1 Special letter."
+                );
 
-        $this->value = Hash::make($password);
+            $this->value = Hash::make($password);
+        }
     }
-
     public function get(): string
     {
         return $this->value;
     }
 
-    public function check(string $passwordAsText): bool
+    public function check(string $password): bool
     {
-        return Hash::check($passwordAsText, $this->value);
+        return Hash::check($password, $this->value);
     }
 
     public static function validate(string $password): bool
@@ -38,5 +42,11 @@ readonly class UserPassword
             preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).+$/', $password) && // 1 upper case, 1 number and 1 special letter regex
             !in_array($lowercasedPassword, $blacklist, true);
     }
-}
 
+    /* TODO: TEST THIS */
+    public function equals(string $hashedPassword): bool
+    {
+        return $this->value === $hashedPassword;
+    }
+
+}

@@ -2,7 +2,7 @@
 
 namespace App\Domain\User\Entities;
 
-use App\Application\User\DTOs\UserRegisterDTO;
+use App\Application\User\DTOs\CreateUserDTO;
 use App\Domain\User\Entities\Profiles\AdminProfile;
 use App\Domain\User\Entities\Profiles\IndividualProfile;
 use App\Domain\User\Entities\Profiles\UserProfile;
@@ -19,9 +19,9 @@ class User implements \JsonSerializable
 
     public function __construct(
         public readonly UserId $id,
-        public readonly UserName $name,
-        public readonly UserEmail $email,
-        public readonly UserPassword $password
+        public UserName $name,
+        public UserEmail $email,
+        public UserPassword $password
     ) {
         // By default, users should be Individual
         $this->profile = new IndividualProfile();
@@ -37,14 +37,28 @@ class User implements \JsonSerializable
         return $this->name->get();
     }
 
-    public function getEmail(): string
+    private function updateName(string $newName): void
+    {
+        $this->name = new UserName($newName);
+    }
+
+    public function getEmail(): string /* TODO: verify every get... return value  */
     {
         return $this->email->get();
     }
-
-    public function getPassword(): string
+    private function updateEmail(string $newEmail): void
     {
-        return $this->password->get();
+        $this->email = new UserEmail($newEmail);
+    }
+
+    public function getPassword(): UserPassword
+    {
+        return $this->password;
+    }
+
+    private function updatePassword(string $newPassword): void
+    {
+        $this->password = new UserPassword($newPassword);
     }
 
     public function getProfile(): UserProfile
@@ -55,6 +69,14 @@ class User implements \JsonSerializable
     public function getProfileType(): string
     {
         return $this->profile->getType();
+    }
+
+    public function update(array $payload): void
+    {
+        /* TODO: re-think this using fromUpdateDto from UserMapper */
+        $this->updateName($payload['name']);
+        $this->updateEmail($payload['email']);
+        $this->updatePassword($payload['password']);
     }
 
     /**

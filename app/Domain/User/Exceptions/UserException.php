@@ -14,8 +14,6 @@ class UserException extends \Exception
         return new self("Cannot assign profile directly in production.");
     }
 
-    public static function emailAlreadyExists(): self
-    {
-        return new self("The given email already exists.");
-    }
+
+
 }

@@ -2,27 +2,30 @@
 
 namespace App\Application\User\UseCases;
 
-use App\Application\User\DTOs\UserRegisterDTO;
+use App\Application\User\DTOs\CreateUserDTO;
+use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserException;
+use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Services\UserService;
 
 readonly class RegisterUserUseCase
 {
 
     public function __construct(
-        private UserService $authService
+        private UserService $userService
     ) {}
 
     /**
-     * @throws UserException
+     * @throws UserAuthException
+     * @throws UserRepositoryException
      */
-    public function execute(UserRegisterDTO $userRegisterDTO): void
+    public function execute(CreateUserDTO $userRegisterDTO): void
     {
-        $user = $this->authService->register($userRegisterDTO);
+        $user = $this->userService->register($userRegisterDTO);
 
-        /* send a welcome email */
-        /* prob Brevo integration here */
-        /* notify admins bla bla bla*/
+        /* TODO: send a welcome email */
+        /* TODO: prob Brevo integration here */
+        /* TODO: notify admins bla bla bla*/
     }
 
 }

@@ -22,18 +22,40 @@ class UserRepository implements UserRepositoryInterface
         $model->save();
     }
 
+    public function update(User $user): void
+    {
+        $model = UserModel::where("id", $user->getId()->toString())->first();
+
+        $model->update([
+            "name" => $user->getName(),
+            "email" => $user->getEmail(),
+            "password" => $user->getPassword()->get(),
+            "updated_at" => now()
+        ]);
+    }
+
+    public function find(string $id): User
+    {
+        /* TODO: throw exception if not found */
+        $userModel = UserModel::find($id);
+
+        return UserMapper::toDomain($userModel);
+    }
+
+    public function findByEmail(string $email): ?User
+    {
+        return UserModel::where("email", $email)->first();
+
+    }
+
     public function emailExists(string $email): bool
     {
         return UserModel::where('email', $email)->exists();
     }
 
-   /* public function find(UserId $id): ?User
+    public function exists(string $id): bool
     {
-        // TODO: Implement find() method.
+        return UserModel::find($id)->exists();
     }
 
-    public function findByEmail(string $email): ?User
-    {
-        // TODO: Implement findByEmail() method.
-    }*/
 }
