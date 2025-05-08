@@ -2,7 +2,8 @@
 
 namespace App\Infrastructure\Persistence\User\Mappers;
 
-use App\Application\User\DTOs\UserRegisterDTO;
+use App\Application\User\DTOs\CreateUserDTO;
+use App\Application\User\DTOs\UpdateUserDTO;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Entities\User as DomainUser;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
@@ -19,7 +20,7 @@ class UserMapper
             UserId::fromString($user->id),
             new UserName($user->name),
             new UserEmail($user->email),
-            new UserPassword($user->password)
+            new UserPassword($user->password) // anti-double hashing in the constructor
         );
     }
 
@@ -29,17 +30,27 @@ class UserMapper
             'id' => $user->getId()->toString(),
             'name' => $user->getName(),
             'email' => $user->getEmail(),
-            'password' => $user->getPassword(),
+            'password' => $user->getPassword()->get(),
         ]);
     }
 
-    public static function fromDto(UserRegisterDTO $dto): User
+    public static function fromCreateDto(CreateUserDTO $dto): User
     {
         return new User(
             UserId::generate(),
             new UserName($dto->getName()),
             new UserEmail($dto->getEmail()),
             new UserPassword($dto->getPassword())
+        );
+    }
+
+    public static function fromUpdateDto(UpdateUserDTO $dto): User
+    {
+        return new User(
+            UserId::generate(),
+            new UserName($dto->getName()),
+            new UserEmail($dto->getEmail()),
+            new UserPassword($dto->getNewPassword())
         );
     }
 }

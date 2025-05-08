@@ -21,5 +21,4 @@ readonly class UserEmail
     {
         return $this->value;
     }
-
 }

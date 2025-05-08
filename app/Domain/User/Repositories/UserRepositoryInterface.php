@@ -10,8 +10,7 @@ interface UserRepositoryInterface
 
     public function getAll(): Collection;
     public function save(User $user): void;
-
-    /*public function find(UserId $id): ?User; // find a user by its id
-    public function findByEmail(string $email): ?User; // find a user by its email*/
+    public function find(string $id): ?User; // find a user by its id
+    public function findByEmail(string $email): ?User; // find a user by its email
 
 }

@@ -2,12 +2,13 @@
 
 namespace App\Application\User\DTOs;
 
-readonly class UserRegisterDTO
+readonly class CreateUserDTO
 {
     public function __construct(
         private string $name,
         private string $email,
         private string $password,
+        private string $passwordConfirmation
     ) {}
 
     public function getName(): string
@@ -23,5 +24,10 @@ readonly class UserRegisterDTO
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getPasswordConfirmation(): string
+    {
+        return $this->passwordConfirmation;
     }
 }

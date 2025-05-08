@@ -67,7 +67,8 @@ class UserControllerTest extends TestCase
         $response = $this->postJson('/api/user', [
             "name" => "Guilherme",
             "email" => "guilherme@santos.pt",
-            "password" => "12345678A."
+            "password" => "12345678A.",
+            "password_confirmation" => "12345678A."
         ]);
 
         /* test if the status code returned is 201 (CREATED) */
