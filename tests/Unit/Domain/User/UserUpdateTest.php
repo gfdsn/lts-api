@@ -10,6 +10,7 @@ use App\Domain\User\Entities\ValueObjects\Attributes\UserName;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Services\UserService;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
+use App\Infrastructure\Persistence\User\Models\UserModel;
 use Tests\TestCase;
 
 class UserUpdateTest extends TestCase
@@ -46,7 +47,7 @@ class UserUpdateTest extends TestCase
             ->once();
 
         $repo->shouldReceive('find')
-            ->andReturn($user)
+            ->andReturn(UserModel::class) // TODO: fix this
             ->once();
 
         $repo->shouldReceive('update')

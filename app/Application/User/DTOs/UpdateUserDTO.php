@@ -44,4 +44,9 @@ readonly class UpdateUserDTO
         return $this->passwordConfirmation;
     }
 
+    public function toUpdateArray(): array
+    {
+        return ["name" => $this->name, "email" => $this->email, "password" => $this->newPassword];
+    }
+
 }

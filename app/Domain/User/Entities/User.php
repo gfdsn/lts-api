@@ -2,7 +2,6 @@
 
 namespace App\Domain\User\Entities;
 
-use App\Application\User\DTOs\CreateUserDTO;
 use App\Domain\User\Entities\Profiles\AdminProfile;
 use App\Domain\User\Entities\Profiles\IndividualProfile;
 use App\Domain\User\Entities\Profiles\UserProfile;
@@ -73,7 +72,6 @@ class User implements \JsonSerializable
 
     public function update(array $payload): void
     {
-        /* TODO: re-think this using fromUpdateDto from UserMapper */
         $this->updateName($payload['name']);
         $this->updateEmail($payload['email']);
         $this->updatePassword($payload['password']);
