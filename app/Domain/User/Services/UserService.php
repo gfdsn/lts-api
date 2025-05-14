@@ -51,6 +51,7 @@ readonly class UserService
     public function update(UpdateUserDTO $dto): User
     {
         $id = $dto->getId();
+        $newEmail = $dto->getEmail();
 
         /* throw exception if the user is not found */
         if (!$this->userRepository->exists($id))
@@ -63,8 +64,7 @@ readonly class UserService
         $userModel = $this->userRepository->find($id);
         $user = UserMapper::toDomain($userModel);
 
-        /* verify if current password is correct */
-        if($this->emailExists($dto->getEmail()))
+        if($this->emailExists($newEmail) && $newEmail != $user->getEmail())
             throw UserRepositoryException::emailAlreadyExists();
 
         /* verify if current password is correct */

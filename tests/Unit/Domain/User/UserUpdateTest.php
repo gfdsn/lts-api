@@ -11,6 +11,7 @@ use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Services\UserService;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Models\UserModel;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class UserUpdateTest extends TestCase
@@ -25,12 +26,12 @@ class UserUpdateTest extends TestCase
         /* create an example user to be updated */
         $userId = UserId::generate();
 
-        $user = new User(
-            $userId,
-            new UserName("User"),
-            new UserEmail('user@user.pt'),
-            new UserPassword("12345678.A")
-        );
+        $user = new UserModel([
+            "id" => $userId->toString(),
+            "name" => "User",
+            "email" => 'user@user.pt',
+            "password" => Hash::make("12345678.A")
+        ]);
 
         /* service should receive a UpdateUserDTO */
         $dto = new UpdateUserDTO(
@@ -43,12 +44,18 @@ class UserUpdateTest extends TestCase
         );
 
         $repo->shouldReceive('exists')
+            ->with($userId->toString())
             ->andReturn(True)
             ->once();
 
         $repo->shouldReceive('find')
-            ->andReturn(UserModel::class) // TODO: fix this
+            ->with($userId->toString())
+            ->andReturn($user)
             ->once();
+
+        $repo->shouldReceive('emailExists')
+            ->with($dto->getEmail())
+            ->andReturn(False);
 
         $repo->shouldReceive('update')
             ->once();
