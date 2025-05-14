@@ -10,7 +10,7 @@ class ResponseBuilder
     {
         return response()->json($data, $statusCode);
     }
-    public static function success(string $message, int $statusCode = 400): JsonResponse
+    public static function success(string $message, int $statusCode = 200): JsonResponse
     {
         return response()->json(["status" => true, "message" => $message ], $statusCode);
     }

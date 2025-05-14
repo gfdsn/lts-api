@@ -3,15 +3,15 @@
 namespace App\Domain\User\Services;
 
 use App\Application\User\DTOs\CreateUserDTO;
+use App\Application\User\DTOs\DeleteUserDTO;
 use App\Application\User\DTOs\UpdateUserDTO;
 use App\Domain\User\Entities\User;
-use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
 use App\Domain\User\Exceptions\UserAuthException;
-use App\Domain\User\Exceptions\UserException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 readonly class UserService
 {
@@ -37,7 +37,7 @@ readonly class UserService
         if ($dto->getPassword() != $dto->getPasswordConfirmation())
             throw UserAuthException::passwordsDoNotMatch();
 
-        $user = UserMapper::fromCreateDto($dto);
+        $user = UserMapper::fromDto($dto);
 
         $this->userRepository->save($user);
 
@@ -51,6 +51,7 @@ readonly class UserService
     public function update(UpdateUserDTO $dto): User
     {
         $id = $dto->getId();
+        $newEmail = $dto->getEmail();
 
         /* throw exception if the user is not found */
         if (!$this->userRepository->exists($id))
@@ -60,20 +61,18 @@ readonly class UserService
         if ($dto->getNewPassword() != $dto->getPasswordConfirmation())
             throw UserAuthException::passwordsDoNotMatch();
 
-        $user = $this->userRepository->find($id);
+        $userModel = $this->userRepository->find($id);
+        $user = UserMapper::toDomain($userModel);
+
+        if($this->emailExists($newEmail) && $newEmail != $user->getEmail())
+            throw UserRepositoryException::emailAlreadyExists();
 
         /* verify if current password is correct */
-        if (!$user->getPassword()->check($dto->getCurrentPassword()))
+        if(!$this->verifyPassword($user, $dto->getCurrentPassword()))
             throw UserAuthException::incorrectPassword();
 
-        $newUserDataPayload = [
-            "name" => $dto->getName(),
-            "email" => $dto->getEmail(),
-            "password" => $dto->getNewPassword()
-        ];
-
         /* updates the domain user */
-        $user->update($newUserDataPayload);
+        $user->update($dto->toUpdateArray());
 
         /* save user's updates in the repository */
         $this->userRepository->update($user);
@@ -81,9 +80,27 @@ readonly class UserService
         return $user;
     }
 
+    /**
+     * @throws UserAuthException
+     */
+    public function delete(DeleteUserDTO $dto): bool
+    {
+        $userModel = $this->userRepository->find($dto->getId());
+        $user = UserMapper::toDomain($userModel);
+
+        if(!$this->verifyPassword($user, $dto->getPassword()))
+            throw UserAuthException::incorrectPassword();
+
+        return $this->userRepository->destroy($dto->getId());
+    }
+
     private function emailExists(string $email): bool
     {
         return $this->userRepository->emailExists($email);
+    }
+    private function verifyPassword(User $user,string $password): bool
+    {
+        return $user->getPassword()->check($password);
     }
 
 }

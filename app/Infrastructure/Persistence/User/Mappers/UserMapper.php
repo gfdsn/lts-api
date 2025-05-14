@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Persistence\User\Mappers;
 
 use App\Application\User\DTOs\CreateUserDTO;
-use App\Application\User\DTOs\UpdateUserDTO;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Entities\User as DomainUser;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
@@ -34,23 +33,14 @@ class UserMapper
         ]);
     }
 
-    public static function fromCreateDto(CreateUserDTO $dto): User
+    public static function fromDto(CreateUserDTO $dto): User
     {
         return new User(
             UserId::generate(),
             new UserName($dto->getName()),
             new UserEmail($dto->getEmail()),
-            new UserPassword($dto->getPassword())
+            new UserPassword($dto->getPassword()),
         );
     }
 
-    public static function fromUpdateDto(UpdateUserDTO $dto): User
-    {
-        return new User(
-            UserId::generate(),
-            new UserName($dto->getName()),
-            new UserEmail($dto->getEmail()),
-            new UserPassword($dto->getNewPassword())
-        );
-    }
 }

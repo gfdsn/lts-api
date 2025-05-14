@@ -7,6 +7,7 @@ use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -24,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function update(User $user): void
     {
-        $model = UserModel::where("id", $user->getId()->toString())->first();
+        $model = $this->find($user->getId()->toString());
 
         $model->update([
             "name" => $user->getName(),
@@ -34,18 +35,20 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    public function find(string $id): User
+    public function destroy(string $id): bool
     {
-        /* TODO: throw exception if not found */
-        $userModel = UserModel::find($id);
+        $model = $this->find($id);
+        return $model->delete();
+    }
 
-        return UserMapper::toDomain($userModel);
+    public function find(string $id): UserModel
+    {
+        return UserModel::find($id);
     }
 
     public function findByEmail(string $email): ?User
     {
         return UserModel::where("email", $email)->first();
-
     }
 
     public function emailExists(string $email): bool

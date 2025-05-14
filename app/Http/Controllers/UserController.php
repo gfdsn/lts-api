@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Application\User\DTOs\CreateUserDTO;
+use App\Application\User\DTOs\DeleteUserDTO;
 use App\Application\User\DTOs\UpdateUserDTO;
+use App\Application\User\UseCases\DeleteUserUseCase;
 use App\Application\User\UseCases\ListAllUsersUseCase;
 use App\Application\User\UseCases\RegisterUserUseCase;
 use App\Application\User\UseCases\UpdateUserUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserException;
 use App\Domain\User\Exceptions\UserRepositoryException;
-use App\Http\Requests\UserStoreRequest;
-use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\User\DeleteUserRequest;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
@@ -23,9 +26,10 @@ class UserController extends Controller
     }
 
     /**
-     * @throws UserException
+     * @throws UserAuthException
+     * @throws UserRepositoryException
      */
-    public function store(UserStoreRequest $request, RegisterUserUseCase $useCase): JsonResponse
+    public function store(StoreUserRequest $request, RegisterUserUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
 
@@ -40,7 +44,7 @@ class UserController extends Controller
      * @throws UserRepositoryException
      * @throws UserAuthException
      */
-    public function update(UserUpdateRequest $request, UpdateUserUseCase $useCase): JsonResponse
+    public function update(UpdateUserRequest $request, UpdateUserUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
 
@@ -48,6 +52,21 @@ class UserController extends Controller
 
         $useCase->execute($dto);
 
-        return ResponseBuilder::success("User updated successfully", 200);
+        return ResponseBuilder::success("User updated successfully");
+    }
+
+    /**
+     * @throws UserRepositoryException
+     * @throws UserAuthException
+     */
+    public function delete(DeleteUserRequest $request, DeleteUserUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $dto = new DeleteUserDTO(...array_values($validated));
+
+        $useCase->execute($dto);
+
+        return ResponseBuilder::success("User deleted successfully");
     }
 }

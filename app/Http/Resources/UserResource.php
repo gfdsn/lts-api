@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             "email_verified_at" => $this->email_verified_at,
-            "profile_type" => $this->whenLoaded('profileType', function () {
+            "profile" => $this->whenLoaded('profileType', function () {
                 return $this->profileType->only('name');
             }),
             "newsletter" => $this->newsletter,
