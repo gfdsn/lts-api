@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Application\User\DTOs\CreateUserDTO;
-use App\Application\User\DTOs\DeleteUserDTO;
-use App\Application\User\DTOs\UpdateUserDTO;
-use App\Application\User\UseCases\DeleteUserUseCase;
-use App\Application\User\UseCases\ListAllUsersUseCase;
-use App\Application\User\UseCases\RegisterUserUseCase;
-use App\Application\User\UseCases\UpdateUserUseCase;
+use App\Application\User\DTOs\CRUD\CreateUserDTO;
+use App\Application\User\DTOs\CRUD\DeleteUserDTO;
+use App\Application\User\DTOs\CRUD\UpdateUserDTO;
+use App\Application\User\UseCases\CRUD\DeleteUserUseCase;
+use App\Application\User\UseCases\CRUD\ListAllUsersUseCase;
+use App\Application\User\UseCases\CRUD\StoreUserUseCase;
+use App\Application\User\UseCases\CRUD\UpdateUserUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
-use App\Domain\User\Exceptions\UserException;
 use App\Domain\User\Exceptions\UserRepositoryException;
-use App\Http\Requests\User\DeleteUserRequest;
-use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Requests\User\CRUD\DeleteUserRequest;
+use App\Http\Requests\User\CRUD\StoreUserRequest;
+use App\Http\Requests\User\CRUD\UpdateUserRequest;
 use App\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api')->only(['update']);
+    }
+
     public function index(ListAllUsersUseCase $useCase): JsonResponse
     {
         return ResponseBuilder::sendData($useCase->execute());
@@ -29,7 +34,7 @@ class UserController extends Controller
      * @throws UserAuthException
      * @throws UserRepositoryException
      */
-    public function store(StoreUserRequest $request, RegisterUserUseCase $useCase): JsonResponse
+    public function store(StoreUserRequest $request, StoreUserUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
 

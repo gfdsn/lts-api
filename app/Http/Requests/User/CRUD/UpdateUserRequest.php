@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\CRUD;
 
 use App\Http\Requests\BaseRequest;
 
@@ -22,7 +22,7 @@ class UpdateUserRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            "id" => "required|exists:users,id",
+            "id" => "required|uuid|exists:users,id",
             "name" => "required|string|max:255|not_in:admin,administrator,root,superuser,system,owner,support,contact,help,info,test,moderator,mod,null,undefined",
             "email" => "required|email|max:255",
             "current_password" => "required|string|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&\.]/",

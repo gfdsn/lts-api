@@ -17,7 +17,7 @@ readonly class UserEmail
         $this->value = $email;
     }
 
-    public function get(): string
+    public function value(): string
     {
         return $this->value;
     }

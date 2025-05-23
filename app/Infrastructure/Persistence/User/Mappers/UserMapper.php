@@ -2,8 +2,7 @@
 
 namespace App\Infrastructure\Persistence\User\Mappers;
 
-use App\Application\User\DTOs\CreateUserDTO;
-use App\Domain\User\Entities\User;
+use App\Application\User\DTOs\Auth\RegisterUserDTO;
 use App\Domain\User\Entities\User as DomainUser;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
@@ -27,15 +26,15 @@ class UserMapper
     {
         return new UserModel([
             'id' => $user->getId()->toString(),
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password' => $user->getPassword()->get(),
+            'name' => $user->getName()->value(),
+            'email' => $user->getEmail()->value(),
+            'password' => $user->getPassword()->value(),
         ]);
     }
 
-    public static function fromDto(CreateUserDTO $dto): User
+    public static function fromDtoToDomain(RegisterUserDTO $dto): DomainUser
     {
-        return new User(
+        return new DomainUser(
             UserId::generate(),
             new UserName($dto->getName()),
             new UserEmail($dto->getEmail()),

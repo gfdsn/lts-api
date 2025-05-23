@@ -4,10 +4,11 @@ namespace App\Infrastructure\Persistence\User\Models;
 
 use App\Infrastructure\Persistence\User\Factories\UserModelFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserModel extends Model
+class UserModel extends Authenticatable implements JWTSubject
 {
     use HasFactory;
 
@@ -29,6 +30,19 @@ class UserModel extends Model
     protected static function newFactory(): UserModelFactory
     {
         return UserModelFactory::new();
+    }
+
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [
+            "exp" => time() + 1800, // token lasts 30 minutes
+            "is_admin" => $this->profile_type_id == 3,
+        ];
     }
 
 }

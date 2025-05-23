@@ -2,13 +2,9 @@
 
 namespace Domain\User;
 
-use App\Application\User\DTOs\UpdateUserDTO;
-use App\Domain\User\Entities\User;
-use App\Domain\User\Entities\ValueObjects\Attributes\UserEmail;
+use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Domain\User\Entities\ValueObjects\Attributes\UserId;
-use App\Domain\User\Entities\ValueObjects\Attributes\UserName;
-use App\Domain\User\Entities\ValueObjects\Attributes\UserPassword;
-use App\Domain\User\Services\UserService;
+use App\Domain\User\Interfaces\UserServiceInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +52,7 @@ class UserUpdateTest extends TestCase
             ->once();
 
         /* inject the user service*/
-        $service = app(UserService::class);
+        $service = app(UserServiceInterface::class);
 
         $updatedUser = $service->update($dto);
 

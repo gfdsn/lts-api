@@ -22,7 +22,8 @@ readonly class UserPassword
             $this->value = Hash::make($password);
         }
     }
-    public function get(): string
+
+    public function value(): string
     {
         return $this->value;
     }

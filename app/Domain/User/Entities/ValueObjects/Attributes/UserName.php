@@ -12,7 +12,7 @@ readonly class UserName
         $this->value = $name;
     }
 
-    public function get(): string { return $this->value; }
+    public function value(): string { return $this->value; }
 
     /* getFirstName, getLastName, ...*/
 }

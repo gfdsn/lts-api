@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 
 class User implements \JsonSerializable
 {
+
     private ?UserProfile $profile;
 
     public function __construct(
@@ -31,9 +32,9 @@ class User implements \JsonSerializable
         return $this->id;
     }
 
-    public function getName(): string
+    public function getName(): UserName
     {
-        return $this->name->get();
+        return $this->name;
     }
 
     private function updateName(string $newName): void
@@ -41,10 +42,11 @@ class User implements \JsonSerializable
         $this->name = new UserName($newName);
     }
 
-    public function getEmail(): string /* TODO: verify every get... return value  */
+    public function getEmail(): UserEmail
     {
-        return $this->email->get();
+        return $this->email;
     }
+
     private function updateEmail(string $newEmail): void
     {
         $this->email = new UserEmail($newEmail);

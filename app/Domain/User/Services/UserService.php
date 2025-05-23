@@ -2,18 +2,19 @@
 
 namespace App\Domain\User\Services;
 
-use App\Application\User\DTOs\CreateUserDTO;
-use App\Application\User\DTOs\DeleteUserDTO;
-use App\Application\User\DTOs\UpdateUserDTO;
+use App\Application\User\DTOs\Auth\RegisterUserDTO;
+use App\Application\User\DTOs\CRUD\CreateUserDTO;
+use App\Application\User\DTOs\CRUD\DeleteUserDTO;
+use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Domain\User\Entities\User;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
+use App\Domain\User\Interfaces\UserServiceInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 
-readonly class UserService
+readonly class UserService implements UserServiceInterface
 {
 
     public function __construct(
@@ -25,19 +26,9 @@ readonly class UserService
         return $this->userRepository->getAll();
     }
 
-    /**
-     * @throws UserAuthException
-     * @throws UserRepositoryException
-     */
-    public function register(CreateUserDTO $dto): User
+    public function register(RegisterUserDTO $dto): User
     {
-        if($this->emailExists($dto->getEmail()))
-            throw UserRepositoryException::emailAlreadyExists();
-
-        if ($dto->getPassword() != $dto->getPasswordConfirmation())
-            throw UserAuthException::passwordsDoNotMatch();
-
-        $user = UserMapper::fromDto($dto);
+        $user = UserMapper::fromDtoToDomain($dto);
 
         $this->userRepository->save($user);
 
@@ -52,14 +43,6 @@ readonly class UserService
     {
         $id = $dto->getId();
         $newEmail = $dto->getEmail();
-
-        /* throw exception if the user is not found */
-        if (!$this->userRepository->exists($id))
-            throw UserRepositoryException::userNotFound();
-
-        /* verify if the new password equals the new password confirmation*/
-        if ($dto->getNewPassword() != $dto->getPasswordConfirmation())
-            throw UserAuthException::passwordsDoNotMatch();
 
         $userModel = $this->userRepository->find($id);
         $user = UserMapper::toDomain($userModel);
