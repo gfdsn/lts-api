@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Infrastructure\Persistence\User\Seeders;
 
 use App\Domain\User\Enums\UserProfileType;
 use App\Infrastructure\Persistence\User\Eloquent\ProfileTypeRepository;

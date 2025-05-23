@@ -43,11 +43,6 @@ class UserUpdateTest extends TestCase
             "12345678.ABC"
         );
 
-        $repo->shouldReceive('exists')
-            ->with($userId->toString())
-            ->andReturn(True)
-            ->once();
-
         $repo->shouldReceive('find')
             ->with($userId->toString())
             ->andReturn($user)
@@ -67,8 +62,8 @@ class UserUpdateTest extends TestCase
 
         /* test if the returned user is updated */
         $this->assertEquals($dto->getId(), $updatedUser->getId()->toString());
-        $this->assertEquals($dto->getName(), $updatedUser->getName());
-        $this->assertEquals($dto->getEmail(), $updatedUser->getEmail());
+        $this->assertEquals($dto->getName(), $updatedUser->getName()->value());
+        $this->assertEquals($dto->getEmail(), $updatedUser->getEmail()->value());
         $this->assertTrue($updatedUser->getPassword()->check($dto->getNewPassword()));
 
     }
