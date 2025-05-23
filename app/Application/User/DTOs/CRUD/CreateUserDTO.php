@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\User\DTOs;
+namespace App\Application\User\DTOs\CRUD;
 
 readonly class CreateUserDTO
 {
@@ -8,7 +8,6 @@ readonly class CreateUserDTO
         private string $name,
         private string $email,
         private string $password,
-        private string $passwordConfirmation
     ) {}
 
     public function getName(): string
@@ -26,8 +25,4 @@ readonly class CreateUserDTO
         return $this->password;
     }
 
-    public function getPasswordConfirmation(): string
-    {
-        return $this->passwordConfirmation;
-    }
 }

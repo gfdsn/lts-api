@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\User\DTOs;
+namespace App\Application\User\DTOs\CRUD;
 
 readonly class UpdateUserDTO
 {

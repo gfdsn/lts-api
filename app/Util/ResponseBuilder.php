@@ -15,8 +15,8 @@ class ResponseBuilder
         return response()->json(["status" => true, "message" => $message ], $statusCode);
     }
 
-    public static function error(array $errors, int $statusCode = 400): JsonResponse
+    public static function error(string $error, int $statusCode = 400): JsonResponse
     {
-        return response()->json(["status" => false, $errors], $statusCode);
+        return response()->json(["status" => false, "error" => $error], $statusCode);
     }
 }

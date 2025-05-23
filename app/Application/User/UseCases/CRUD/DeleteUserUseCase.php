@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\User\UseCases;
+namespace App\Application\User\UseCases\CRUD;
 
-use App\Application\User\DTOs\DeleteUserDTO;
+use App\Application\User\DTOs\CRUD\DeleteUserDTO;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Services\UserService;

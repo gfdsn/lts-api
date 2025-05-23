@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\CRUD;
 
 use App\Http\Requests\BaseRequest;
 
@@ -22,8 +22,8 @@ class DeleteUserRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            "id" => "required|exists:users,id",
-            "password" => "required|string|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&\.]/"
+            "email" => "required|email|max:255|unique:users,email",
+            "password" => "required|string|min:8|regex:/[A-Z]/|regex:/[0-9]/|regex:/[@$!%*?&\.]/|confirmed",
         ];
     }
 }

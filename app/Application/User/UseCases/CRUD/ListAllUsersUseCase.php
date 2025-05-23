@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\User\UseCases;
+namespace App\Application\User\UseCases\CRUD;
 
 use App\Domain\User\Services\UserService;
 use App\Http\Resources\UserResource;

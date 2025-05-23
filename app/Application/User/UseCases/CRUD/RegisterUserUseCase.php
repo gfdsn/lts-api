@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Application\User\UseCases;
+namespace App\Application\User\UseCases\CRUD;
 
-use App\Application\User\DTOs\CreateUserDTO;
+use App\Application\User\DTOs\CRUD\CreateUserDTO;
 use App\Domain\User\Exceptions\UserAuthException;
-use App\Domain\User\Exceptions\UserException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Services\UserService;
 
