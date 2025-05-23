@@ -29,7 +29,7 @@ class UserCreationTest extends TestCase
         $this->assertFalse($user->getId()->equals("888fa974-50d0-43f7-b0c4-d28385c852d1"));
 
         /* user name verification */
-        $this->assertEquals('User', $user->getName());
+        $this->assertEquals('User', $user->getName()->value());
 
         /* user profile set as individual by default */
         $this->assertEquals("individual", $user->getProfileType());

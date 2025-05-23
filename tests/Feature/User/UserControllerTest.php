@@ -59,8 +59,8 @@ class UserControllerTest extends TestCase
             ->once()
             ->andReturnUsing(function ($user) {
                 /* test if the user was actually saved to the db*/
-                $this->assertEquals('Guilherme', $user->getName());
-                $this->assertEquals('guilherme@santos.pt', $user->getEmail());
+                $this->assertEquals('Guilherme', $user->getName()->value());
+                $this->assertEquals('guilherme@santos.pt', $user->getEmail()->value());
             });
 
         /* send the request with an example payload */
