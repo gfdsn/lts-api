@@ -12,5 +12,4 @@ interface AuthenticatorInterface
      * @throws UserAuthException
      */
     public function validate(string $email, string $password): ?UserModel;
-    public function generateToken(UserModel $user): string;
 }

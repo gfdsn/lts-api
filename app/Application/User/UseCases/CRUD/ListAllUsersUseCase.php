@@ -2,7 +2,7 @@
 
 namespace App\Application\User\UseCases\CRUD;
 
-use App\Domain\User\Services\UserService;
+use App\Domain\User\Interfaces\UserServiceInterface;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
@@ -10,7 +10,7 @@ readonly class ListAllUsersUseCase
 {
 
     public function __construct(
-        private UserService $userService
+        private UserServiceInterface $userService
     ) {}
 
     public function execute(): ResourceCollection

@@ -7,14 +7,12 @@ use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\JWTAuth;
 
 class Authenticator implements AuthenticatorInterface
 {
 
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private JWTAuth $jwt,
     ){}
 
     /**
@@ -28,10 +26,5 @@ class Authenticator implements AuthenticatorInterface
             throw UserAuthException::invalidCredentials();
 
         return $user;
-    }
-
-    public function generateToken(UserModel $user): string
-    {
-        return $this->jwt->fromUser($user);
     }
 }

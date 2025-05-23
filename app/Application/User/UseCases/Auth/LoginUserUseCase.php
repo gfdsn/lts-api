@@ -5,6 +5,7 @@ namespace App\Application\User\UseCases\Auth;
 use App\Application\User\DTOs\Auth\LoginUserDTO;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Exceptions\UserAuthException;
+use App\Domain\User\Services\TokenService;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -16,7 +17,8 @@ class LoginUserUseCase
     */
 
     public function __construct(
-        private AuthenticatorInterface $authenticator
+        private AuthenticatorInterface $authenticator,
+        private TokenService $tokenService
     ){}
 
     /**
@@ -26,7 +28,7 @@ class LoginUserUseCase
     {
         $userModel = $this->authenticator->validate($dto->getEmail(), $dto->getPassword());
 
-        return $this->authenticator->generateToken($userModel);
+        return $this->tokenService->generateToken($userModel);
     }
 
 }

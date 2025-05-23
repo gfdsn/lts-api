@@ -5,12 +5,12 @@ namespace App\Application\User\UseCases\CRUD;
 use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
-use App\Domain\User\Services\UserService;
+use App\Domain\User\Interfaces\UserServiceInterface;
 
 readonly class UpdateUserUseCase
 {
     public function __construct(
-        private UserService $userService
+        private UserServiceInterface $userService
     ) {}
 
     /**
