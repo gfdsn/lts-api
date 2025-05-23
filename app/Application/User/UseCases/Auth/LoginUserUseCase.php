@@ -5,20 +5,13 @@ namespace App\Application\User\UseCases\Auth;
 use App\Application\User\DTOs\Auth\LoginUserDTO;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Exceptions\UserAuthException;
-use App\Domain\User\Services\TokenService;
-use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Domain\User\Interfaces\TokenServiceInterface;
 
-class LoginUserUseCase
+readonly class LoginUserUseCase
 {
-    /*
-        Create the domain and save to the db
-        Return a token or throw errors
-    */
-
     public function __construct(
         private AuthenticatorInterface $authenticator,
-        private TokenService $tokenService
+        private TokenServiceInterface $tokenService
     ){}
 
     /**
@@ -26,7 +19,7 @@ class LoginUserUseCase
      */
     public function execute(LoginUserDTO $dto): ?string
     {
-        $userModel = $this->authenticator->validate($dto->getEmail(), $dto->getPassword());
+        $userModel = $this->authenticator->validateLoginPayload($dto->getEmail(), $dto->getPassword());
 
         return $this->tokenService->generateToken($userModel);
     }

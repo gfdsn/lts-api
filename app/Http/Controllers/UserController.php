@@ -7,11 +7,10 @@ use App\Application\User\DTOs\CRUD\DeleteUserDTO;
 use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Application\User\UseCases\CRUD\DeleteUserUseCase;
 use App\Application\User\UseCases\CRUD\ListAllUsersUseCase;
-use App\Application\User\UseCases\CRUD\RegisterUserUseCase;
+use App\Application\User\UseCases\CRUD\StoreUserUseCase;
 use App\Application\User\UseCases\CRUD\UpdateUserUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
-use App\Http\Middleware\VerifyIfPasswordsMatch;
 use App\Http\Requests\User\CRUD\DeleteUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
 use App\Http\Requests\User\CRUD\UpdateUserRequest;
@@ -35,7 +34,7 @@ class UserController extends Controller
      * @throws UserAuthException
      * @throws UserRepositoryException
      */
-    public function store(StoreUserRequest $request, RegisterUserUseCase $useCase): JsonResponse
+    public function store(StoreUserRequest $request, StoreUserUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
 

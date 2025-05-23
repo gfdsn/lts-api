@@ -39,7 +39,10 @@ class UserModel extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims(): array
     {
-        return [];
+        return [
+            "exp" => time() + 1800, // token lasts 30 minutes
+            "is_admin" => $this->profile_type_id == 3,
+        ];
     }
 
 }

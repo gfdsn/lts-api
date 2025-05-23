@@ -2,6 +2,7 @@
 
 namespace App\Domain\User\Services;
 
+use App\Application\User\DTOs\Auth\RegisterUserDTO;
 use App\Application\User\DTOs\CRUD\CreateUserDTO;
 use App\Application\User\DTOs\CRUD\DeleteUserDTO;
 use App\Application\User\DTOs\CRUD\UpdateUserDTO;
@@ -25,16 +26,9 @@ readonly class UserService implements UserServiceInterface
         return $this->userRepository->getAll();
     }
 
-    /**
-     * @throws UserAuthException
-     * @throws UserRepositoryException
-     */
-    public function register(CreateUserDTO $dto): User
+    public function register(RegisterUserDTO $dto): User
     {
-        if($this->emailExists($dto->getEmail()))
-            throw UserRepositoryException::emailAlreadyExists();
-
-        $user = UserMapper::fromDto($dto);
+        $user = UserMapper::fromDtoToDomain($dto);
 
         $this->userRepository->save($user);
 

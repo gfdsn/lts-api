@@ -2,9 +2,6 @@
 
 namespace App\Domain\User\Exceptions;
 
-use App\Util\ResponseBuilder;
-use Illuminate\Http\JsonResponse;
-
 class UserAuthException extends \Exception
 {
     public static function incorrectPassword(): self
@@ -19,4 +16,5 @@ class UserAuthException extends \Exception
     {
         return new self("The given credentials are invalid.");
     }
+
 }
