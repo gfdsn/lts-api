@@ -11,7 +11,7 @@ use App\Application\User\UseCases\CRUD\StoreUserUseCase;
 use App\Application\User\UseCases\CRUD\UpdateUserUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
-use App\Http\Middleware\IsLoggedIn;
+use App\Http\Middleware\VerifyIfUserIsAdmin;
 use App\Http\Middleware\VerifyUserIdentity;
 use App\Http\Requests\User\CRUD\DeleteUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
@@ -25,6 +25,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api', VerifyUserIdentity::class])->only(['update', 'delete']);
+        $this->middleware(['auth:api', VerifyIfUserIsAdmin::class])->only(['index']);
     }
 
     public function index(ListAllUsersUseCase $useCase): JsonResponse
