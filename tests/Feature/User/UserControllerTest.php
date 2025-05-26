@@ -64,7 +64,7 @@ class UserControllerTest extends TestCase
             });
 
         /* send the request with an example payload */
-        $response = $this->postJson('/api/user', [
+        $response = $this->postJson('/api/register', [
             "name" => "Guilherme",
             "email" => "guilherme@santos.pt",
             "password" => "12345678A.",
@@ -75,6 +75,7 @@ class UserControllerTest extends TestCase
         $response->assertStatus(201);
 
         /* verify the response content */
-        $response->assertJson(["status" => true, "message" => "User registered successfully"]);
+        $response->assertJson(["status" => true, "message" => "User registered successfully."]);
     }
+
 }

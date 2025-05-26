@@ -41,11 +41,11 @@ class AuthController extends Controller
         try {
             $token = $useCase->execute($dto);
         } catch (UserRepositoryException $e){
-            return ResponseBuilder::error("The provided email is already registered.", 409);
+            return ResponseBuilder::error($e->getMessage(), 409);
         } catch (\Throwable $e){
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
-        return ResponseBuilder::sendData(["status" => true, "message" => "User registered successfully.", "token" => $token]);
+        return ResponseBuilder::sendData(["status" => true, "message" => "User registered successfully.", "token" => $token], 201);
     }
 }
