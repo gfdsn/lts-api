@@ -47,7 +47,7 @@ readonly class UserService implements UserServiceInterface
         $userModel = $this->userRepository->find($id);
         $user = UserMapper::toDomain($userModel);
 
-        if($this->emailExists($newEmail) && $newEmail != $user->getEmail())
+        if($this->emailExists($newEmail) && $newEmail != $user->getEmail()->value())
             throw UserRepositoryException::emailAlreadyExists();
 
         /* verify if current password is correct */
