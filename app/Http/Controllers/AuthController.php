@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Application\User\DTOs\Auth\LoginUserDTO;
-use App\Application\User\DTOs\Auth\LogoutUserDTO;
 use App\Application\User\DTOs\Auth\RegisterUserDTO;
 use App\Application\User\UseCases\Auth\LoginUserUseCase;
 use App\Application\User\UseCases\Auth\LogoutUserUseCase;
@@ -32,7 +31,7 @@ class AuthController extends Controller
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
-        return ResponseBuilder::sendData(["status" => true, "message" => "User logged in successfully.", "token" => $token]);
+        return ResponseBuilder::sendTokenAsCookie("User logged in successfully.", $token);
     }
 
     public function register(StoreUserRequest $request, RegisterUserUseCase $useCase): JsonResponse
@@ -49,18 +48,17 @@ class AuthController extends Controller
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
-        return ResponseBuilder::sendData(["status" => true, "message" => "User registered successfully.", "token" => $token], 201);
+        return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token);
     }
 
     public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase): JsonResponse
     {
-
-        $token = $request->header('Authorization');
+        $token = $request->cookie("token");
         if ($token) {
             try{
                 $useCase->execute();
 
-                return ResponseBuilder::success("User logged out successfully.");
+                return ResponseBuilder::sendTokenAsCookie("User logged out successfully.", $token, -1); // telling the browser to delete the cookie
             } catch (\Throwable $e) {
                 return ResponseBuilder::error("There was a server error, please try again later.", 500);
             }
