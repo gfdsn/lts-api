@@ -6,12 +6,14 @@ use App\Application\User\DTOs\Auth\LoginUserDTO;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Interfaces\TokenServiceInterface;
+use Tymon\JWTAuth\JWTAuth;
 
 readonly class LoginUserUseCase
 {
     public function __construct(
         private AuthenticatorInterface $authenticator,
-        private TokenServiceInterface $tokenService
+        private TokenServiceInterface $tokenService,
+        private JWTAuth $jwt,
     ){}
 
     /**
@@ -19,6 +21,15 @@ readonly class LoginUserUseCase
      */
     public function execute(LoginUserDTO $dto): ?string
     {
+
+        /*
+         * Store a session identifier in the JWT and maintain a list of active session IDs on the server.
+         * Invalidate sessions by removing their IDs from the active list.
+         */
+
+        if (auth()->check()) // basically if there's a token in the request
+            $this->jwt->invalidate($this->jwt->getToken());
+
         $userModel = $this->authenticator->validateLoginPayload($dto->getEmail(), $dto->getPassword());
 
         return $this->tokenService->generateToken($userModel);

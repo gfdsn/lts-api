@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\Persistence\User\Models;
 
+use App\Domain\User\Enums\UserProfileType;
 use App\Infrastructure\Persistence\User\Factories\UserModelFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -25,6 +27,13 @@ class UserModel extends Authenticatable implements JWTSubject
     public function profileType(): BelongsTo
     {
         return $this->belongsTo(ProfileTypeModel::class);
+    }
+
+    protected function isAdmin(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->profileType?->name === UserProfileType::ADMIN->value
+        );
     }
 
     protected static function newFactory(): UserModelFactory

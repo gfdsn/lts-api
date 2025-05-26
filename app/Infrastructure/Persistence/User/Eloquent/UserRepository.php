@@ -28,9 +28,9 @@ class UserRepository implements UserRepositoryInterface
         $model = $this->find($user->getId()->toString());
 
         $model->update([
-            "name" => $user->getName(),
-            "email" => $user->getEmail(),
-            "password" => $user->getPassword()->get(),
+            "name" => $user->getName()->value(),
+            "email" => $user->getEmail()->value(),
+            "password" => $user->getPassword()->value(),
             "updated_at" => now()
         ]);
     }

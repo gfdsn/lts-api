@@ -1,8 +1,12 @@
 <?php
 
+use App\Util\ResponseBuilder;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,5 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (AuthenticationException $e, $request) {
+            return ResponseBuilder::error('Unauthenticated', 401);
+        });
+
+        $exceptions->render(function (TooManyRequestsHttpException $e, $request) {
+            return ResponseBuilder::error("Too many requests", 429);
+        });
     })->create();
