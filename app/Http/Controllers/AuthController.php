@@ -14,9 +14,16 @@ use App\Http\Requests\User\Auth\LogoutUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
 use App\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('throttle:api')->except('logout');
+    }
+
     public function login(LoginUserRequest $request, LoginUserUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
@@ -25,7 +32,11 @@ class AuthController extends Controller
 
         try {
             $token = $useCase->execute($dto);
+
         } catch (UserAuthException $e){
+            $errorDetails = ["ip" => $request->ip(), "email" => $validated["email"], "error" => $e->getMessage()];
+            Log::channel('failed_logins')->warning('There was a failed attempt to login with the following details: '.json_encode($errorDetails));
+
             return ResponseBuilder::error($e->getMessage(), 401);
         } catch (\Throwable $e){
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
@@ -65,5 +76,10 @@ class AuthController extends Controller
         } else {
             return ResponseBuilder::error("The token is missing.");
         }
+    }
+
+    public function forgotPassword(): JsonResponse
+    {
+
     }
 }

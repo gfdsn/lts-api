@@ -52,6 +52,11 @@ return [
 
     'channels' => [
 
+        'failed_logins' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/failed_logins.log'),
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => explode(',', env('LOG_STACK', 'single')),

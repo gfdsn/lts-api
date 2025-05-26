@@ -24,8 +24,10 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['auth:api', VerifyUserIdentity::class])->only(['update', 'delete']);
-        $this->middleware(['auth:api', VerifyIfUserIsAdmin::class])->only(['index']);
+        $this->middleware('auth:api');
+        $this->middleware(VerifyUserIdentity::class)->only(['update', 'delete']);
+        $this->middleware(VerifyIfUserIsAdmin::class)->only(['index']);
+        $this->middleware('throttle:api');
     }
 
     public function index(ListAllUsersUseCase $useCase): JsonResponse
