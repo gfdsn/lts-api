@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Application\User\DTOs\Auth\LoginUserDTO;
+use App\Application\User\DTOs\Auth\LogoutUserDTO;
 use App\Application\User\DTOs\Auth\RegisterUserDTO;
 use App\Application\User\UseCases\Auth\LoginUserUseCase;
+use App\Application\User\UseCases\Auth\LogoutUserUseCase;
 use App\Application\User\UseCases\Auth\RegisterUserUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Http\Requests\User\Auth\LoginUserRequest;
+use App\Http\Requests\User\Auth\LogoutUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
 use App\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
@@ -47,5 +50,22 @@ class AuthController extends Controller
         }
 
         return ResponseBuilder::sendData(["status" => true, "message" => "User registered successfully.", "token" => $token], 201);
+    }
+
+    public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase): JsonResponse
+    {
+
+        $token = $request->header('Authorization');
+        if ($token) {
+            try{
+                $useCase->execute();
+
+                return ResponseBuilder::success("User logged out successfully.");
+            } catch (\Throwable $e) {
+                return ResponseBuilder::error("There was a server error, please try again later.", 500);
+            }
+        } else {
+            return ResponseBuilder::error("The token is missing.");
+        }
     }
 }
