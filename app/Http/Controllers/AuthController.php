@@ -12,7 +12,7 @@ use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Http\Requests\User\Auth\LoginUserRequest;
 use App\Http\Requests\User\Auth\LogoutUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
-use App\Util\ResponseBuilder;
+use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -56,7 +56,9 @@ class AuthController extends Controller
         } catch (UserRepositoryException $e){
             return ResponseBuilder::error($e->getMessage(), 409);
         } catch (\Throwable $e){
-            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+            return ResponseBuilder::error($e->getMessage(), 500);
+
+           /* return ResponseBuilder::error("There was a server error, please try again later.", 500); */
         }
 
         return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token);

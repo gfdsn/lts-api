@@ -7,6 +7,7 @@ use App\Application\User\DTOs\CRUD\CreateUserDTO;
 use App\Application\User\DTOs\CRUD\DeleteUserDTO;
 use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Domain\User\Entities\User;
+use App\Domain\User\Events\UserRegistered;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Interfaces\UserServiceInterface;
@@ -29,6 +30,9 @@ readonly class UserService implements UserServiceInterface
     public function register(RegisterUserDTO $dto): User
     {
         $user = UserMapper::fromDtoToDomain($dto);
+
+        /* TODO: in production remember to use a queue worker process */
+        event(new UserRegistered(UserMapper::toModel($user)));
 
         $this->userRepository->save($user);
 

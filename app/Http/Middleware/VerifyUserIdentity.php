@@ -2,8 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Domain\User\Enums\UserProfileType;
-use App\Util\ResponseBuilder;
+use App\Http\Util\ResponseBuilder;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

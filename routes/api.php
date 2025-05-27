@@ -15,3 +15,12 @@ Route::group([
     Route::delete('/', [UserController::class, 'delete']);
     Route::get('/', [UserController::class, 'index']);
 });
+
+/*
+Route::get('/test-mail', function () {
+    $user = \App\Infrastructure\Persistence\User\Models\UserModel::where("email", "campoozh@gmail.com")->get()->first();
+
+    \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\IndividualWelcomeEmail($user));
+    return 'Sent';
+});
+*/
