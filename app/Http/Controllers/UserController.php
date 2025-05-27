@@ -16,7 +16,7 @@ use App\Http\Middleware\VerifyUserIdentity;
 use App\Http\Requests\User\CRUD\DeleteUserRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
 use App\Http\Requests\User\CRUD\UpdateUserRequest;
-use App\Util\ResponseBuilder;
+use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
