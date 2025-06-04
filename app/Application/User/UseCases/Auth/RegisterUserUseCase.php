@@ -37,11 +37,7 @@ readonly class RegisterUserUseCase
         return $this->tokenService->generateToken($userModel);
 
         /* TODO: notify admins bla bla bla*/
-
-
-        /* TODO: send a welcome email */
-            /* TODO: add a verify email link */
-
+        /* TODO: add a verify email link */
         /* TODO: prob Brevo integration here */
 
     }

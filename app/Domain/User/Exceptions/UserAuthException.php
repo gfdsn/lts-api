@@ -16,5 +16,4 @@ class UserAuthException extends \Exception
     {
         return new self("The given credentials are invalid.");
     }
-
 }

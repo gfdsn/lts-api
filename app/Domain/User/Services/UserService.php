@@ -3,17 +3,17 @@
 namespace App\Domain\User\Services;
 
 use App\Application\User\DTOs\Auth\RegisterUserDTO;
-use App\Application\User\DTOs\CRUD\CreateUserDTO;
 use App\Application\User\DTOs\CRUD\DeleteUserDTO;
 use App\Application\User\DTOs\CRUD\UpdateUserDTO;
 use App\Domain\User\Entities\User;
-use App\Domain\User\Events\UserRegistered;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Interfaces\UserServiceInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
+use App\Mail\IndividualWelcomeEmail;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
 
 readonly class UserService implements UserServiceInterface
 {
@@ -32,7 +32,8 @@ readonly class UserService implements UserServiceInterface
         $user = UserMapper::fromDtoToDomain($dto);
 
         /* TODO: in production remember to use a queue worker process */
-        event(new UserRegistered(UserMapper::toModel($user)));
+        /* TODO: refactor this */
+        Mail::to($user->getEmail()->value())->send(new IndividualWelcomeEmail(UserMapper::toModel($user)));
 
         $this->userRepository->save($user);
 
@@ -81,10 +82,11 @@ readonly class UserService implements UserServiceInterface
         return $this->userRepository->destroy($dto->getId());
     }
 
-    private function emailExists(string $email): bool
+    public function emailExists(string $email): bool
     {
         return $this->userRepository->emailExists($email);
     }
+
     private function verifyPassword(User $user,string $password): bool
     {
         return $user->getPassword()->check($password);
