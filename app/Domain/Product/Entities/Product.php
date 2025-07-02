@@ -31,59 +31,59 @@ class Product implements \JsonSerializable
         public ProductAccessories  $accessories, // available accessories for a product
     ){}
 
-    public function getId(): ProductId
+    public function getId(): string
     {
-        return  $this->id;
+        return  $this->id->toString();
     }
 
-    public function getTitle(): ProductTitle
+    public function getTitle(): string
     {
-        return $this->title;
+        return $this->title->value();
     }
 
-    public function getDescription(): ProductDescription
+    public function getDescription(): string
     {
-        return $this->description;
+        return $this->description->value();
     }
 
-    public function getAttributes(): ProductAttribute
+    public function getAttributes(): array
     {
-        return $this->attributes;
+        return $this->attributes->toArray();
     }
 
-    public function getMeasures(): ProductMeasure
+    public function getMeasures(): array
     {
-        return $this->measures;
+        return $this->measures->toArray();
     }
 
-    public function getClassification(): ProductClassification
+    public function getClassification(): array
     {
-        return $this->classification;
+        return $this->classification->toArray();
     }
 
-    public function getCosts(): ProductCost
+    public function getCosts(): array
     {
-        return $this->costs;
+        return $this->costs->toArray();
     }
 
-    public function getImages(): ProductImage
+    public function getImages(): array
     {
-        return $this->images;
+        return $this->images->getImages();
     }
 
-    public function getDocumentation(): ProductDocumentation
+    public function getDocumentation(): array
     {
-        return $this->documentation;
+        return $this->documentation->getDocs();
     }
 
-    public function getStock(): ProductStock
+    public function getStock(): int
     {
-        return $this->stock;
+        return $this->stock->getQuantity();
     }
 
-    public function getAccessories(): ProductAccessories
+    public function getAccessories(): array
     {
-        return $this->accessories;
+        return $this->accessories->getAccessories();
     }
 
     public function update(){}
@@ -94,14 +94,14 @@ class Product implements \JsonSerializable
             'id' => $this->id->toString(),
             'title' => $this->title->value(),
             'description' => $this->description->value(),
-            'attributes' => $this->attributes->toArray(), // e.g., ['weight' => ..., 'color' => ...]
-            'measures' => $this->measures->toArray(),     // e.g., ['width' => ..., 'length' => ..., 'height' => ...]
-            'classification' => $this->classification->toArray(), // ['category' => ..., 'subcategory' => ...]
-            'costs' => $this->costs->toArray(),           // ['price' => ..., 'shipping_price' => ...]
-            'images' => $this->images->getImages(),         // e.g., list of URLs or paths
-            'documentation' => $this->documentation->getDocs(), // e.g., ['manual' => ..., 'specs' => ...]
-            'stock' => $this->stock->getQuantity(),           // e.g., ['quantity' => ..., 'status' => ...]
-            'accessories' => $this->accessories->getAccessories(), // e.g., ['charger', 'case', ...]
+            'attributes' => $this->attributes->toArray(),
+            'measures' => $this->measures->toArray(),
+            'classification' => $this->classification->toArray(),
+            'costs' => $this->costs->toArray(),
+            'images' => $this->images->getImages(),
+            'documentation' => $this->documentation->getDocs(),
+            'stock' => $this->stock->getQuantity(),
+            'accessories' => $this->accessories->getAccessories(),
         ];
     }
 

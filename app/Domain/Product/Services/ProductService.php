@@ -5,12 +5,23 @@ namespace App\Domain\Product\Services;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Domain\Product\Entities\Product;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
+use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
 
 class ProductService implements ProductServiceInterface
 {
+
+
+    public function __construct(
+        private ProductRepositoryInterface $productRepository
+    ){}
+
     public function create(StoreProductDTO $dto): Product
     {
-        return ProductMapper::fromDtoToDomain($dto);
+        $product = ProductMapper::fromDtoToDomain($dto);
+
+        $this->productRepository->save($product);
+
+        return $product;
     }
 }

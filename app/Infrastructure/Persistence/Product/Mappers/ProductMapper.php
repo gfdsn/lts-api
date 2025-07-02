@@ -16,9 +16,27 @@ use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
 use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
+use App\Infrastructure\Persistence\Product\Models\ProductModel;
 
 class ProductMapper
 {
+
+    public static function toModel(Product $product): ProductModel
+    {
+        return new ProductModel([
+            'id' => $product->getId(),
+            'title' => $product->getTitle(),
+            'description' => $product->getDescription(),
+            'attributes' => $product->getAttributes(),
+            'measures' => $product->getMeasures(),
+            'classification' => $product->getClassification(),
+            'costs' => $product->getCosts(),
+            'images' => $product->getImages(),
+            'documentation' => $product->getDocumentation(),
+            'stock' => $product->getStock(),
+            'accessories' => $product->getAccessories(),
+        ]);
+    }
 
     public static function fromDtoToDomain(StoreProductDTO $dto): Product
     {

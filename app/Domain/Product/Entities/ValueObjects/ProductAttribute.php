@@ -6,7 +6,7 @@ readonly class ProductAttribute
 {
 
     public function __construct(
-        private string $weight,
+        private int $weight,
         private string $color,
         /* ... */
     ){}
