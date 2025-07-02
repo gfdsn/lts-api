@@ -74,6 +74,7 @@ class User implements \JsonSerializable
 
     public function update(array $payload): void
     {
+        // TODO: permissions
         $this->updateName($payload['name']);
         $this->updateEmail($payload['email']);
         $this->updatePassword($payload['password']);

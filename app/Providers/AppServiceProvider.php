@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Product\Interfaces\ProductServiceInterface;
+use App\Domain\Product\Services\ProductService;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Interfaces\TokenServiceInterface;
 use App\Domain\User\Interfaces\UserServiceInterface;
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
             TokenServiceInterface::class => TokenService::class,
             ProfileTypeRepositoryInterface::class => ProfileTypeRepository::class,
             AuthenticatorInterface::class => Authenticator::class,
+            ProductServiceInterface::class => ProductService::class,
         ];
 
         foreach ($bindings as $interface => $implementation) {

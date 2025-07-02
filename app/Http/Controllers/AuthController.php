@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\User\DTOs\Auth\ForgotPasswordDTO;
 use App\Application\User\DTOs\Auth\LoginUserDTO;
 use App\Application\User\DTOs\Auth\RegisterUserDTO;
+use App\Application\User\DTOs\Auth\ResetPasswordDTO;
+use App\Application\User\UseCases\Auth\ForgotPasswordUseCase;
 use App\Application\User\UseCases\Auth\LoginUserUseCase;
 use App\Application\User\UseCases\Auth\LogoutUserUseCase;
 use App\Application\User\UseCases\Auth\RegisterUserUseCase;
+use App\Application\User\UseCases\Auth\ResetPasswordUseCase;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
+use App\Http\Requests\User\Auth\ForgotPasswordRequest;
 use App\Http\Requests\User\Auth\LoginUserRequest;
 use App\Http\Requests\User\Auth\LogoutUserRequest;
+use App\Http\Requests\User\Auth\ResetPasswordRequest;
 use App\Http\Requests\User\CRUD\StoreUserRequest;
-use App\Util\ResponseBuilder;
+use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -21,6 +27,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
+        $this->middleware('auth:api')->only('logout');
         $this->middleware('throttle:api')->except('logout');
     }
 
@@ -56,7 +63,7 @@ class AuthController extends Controller
         } catch (UserRepositoryException $e){
             return ResponseBuilder::error($e->getMessage(), 409);
         } catch (\Throwable $e){
-            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+           return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
         return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token);
@@ -64,22 +71,52 @@ class AuthController extends Controller
 
     public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase): JsonResponse
     {
-        $token = $request->cookie("token");
-        if ($token) {
-            try{
-                $useCase->execute();
+        try{
+            $useCase->execute();
 
-                return ResponseBuilder::sendTokenAsCookie("User logged out successfully.", $token, -1); // telling the browser to delete the cookie
-            } catch (\Throwable $e) {
-                return ResponseBuilder::error("There was a server error, please try again later.", 500);
-            }
-        } else {
-            return ResponseBuilder::error("The token is missing.");
+            $token = $request->cookie("token");
+            return ResponseBuilder::sendTokenAsCookie("User logged out successfully.", $token, -1); // telling the browser to delete the cookie
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
     }
 
-    public function forgotPassword(): JsonResponse
+    public function forgotPassword(ForgotPasswordRequest $request, ForgotPasswordUseCase $useCase): JsonResponse
     {
+
+        $validated = $request->validated();
+
+        $dto = new ForgotPasswordDTO(...array_values($validated));
+
+        try {
+            $useCase->execute($dto);
+
+            return ResponseBuilder::success("Notification sent successfully.");
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+    }
+
+    public function resetPassword(ResetPasswordRequest $request, ResetPasswordUseCase $useCase): JsonResponse
+    {
+
+        /* TODO: reset tokens should expire */
+
+        $validated = $request->validated();
+        $dto = new ResetPasswordDTO(...array_values($validated));
+
+        try {
+            $useCase->execute($dto);
+
+            return ResponseBuilder::success("Password was reset successfully.");
+        } catch (UserAuthException $e) {
+            return ResponseBuilder::error($e->getMessage());
+        } catch (UserRepositoryException $e){
+            return ResponseBuilder::error($e->getMessage(), 404);
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error($e->getMessage(), 500);
+           /* return ResponseBuilder::error("There was a server error, please try again later.", 500); */
+        }
 
     }
 }
