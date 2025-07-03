@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Product\Entities;
+namespace App\Domain\Product\Category\Entities;
 
-use App\Domain\Product\Entities\ValueObjects\Category\CategoryId;
-use App\Domain\Product\Entities\ValueObjects\Category\CategoryName;
+use App\Domain\Product\Category\Entities\ValueObjects\CategoryId;
+use App\Domain\Product\Category\Entities\ValueObjects\CategoryName;
 
 class Category implements \JsonSerializable
 {

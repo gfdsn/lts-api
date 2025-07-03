@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Product\Entities\ValueObjects\Category;
+namespace App\Domain\Product\Category\Entities\ValueObjects;
 
 class CategoryName
 {

@@ -3,7 +3,7 @@
 namespace App\Application\Product\UseCases\Category;
 
 use App\Application\Product\DTOs\Category\UpdateCategoryDTO;
-use App\Domain\Product\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Category\Interfaces\CategoryServiceInterface;
 
 readonly class UpdateCategoryUseCase
 {

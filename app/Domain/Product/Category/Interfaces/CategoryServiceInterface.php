@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Product\Interfaces;
+namespace App\Domain\Product\Category\Interfaces;
 
 use App\Application\Product\DTOs\Category\DeleteCategoryDTO;
 use App\Application\Product\DTOs\Category\StoreCategoryDTO;
 use App\Application\Product\DTOs\Category\UpdateCategoryDTO;
-use App\Domain\Product\Entities\Category;
+use App\Domain\Product\Category\Entities\Category;
 use Illuminate\Support\Collection;
 
 interface CategoryServiceInterface

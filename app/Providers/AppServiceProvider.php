@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Domain\Product\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Category\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Category\Repositories\CategoryRepositoryInterface;
+use App\Domain\Product\Category\Services\CategoryService;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
-use App\Domain\Product\Repositories\CategoryRepositoryInterface;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
-use App\Domain\Product\Services\CategoryService;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Interfaces\AuthServiceInterface;

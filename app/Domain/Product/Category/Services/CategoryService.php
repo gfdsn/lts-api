@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\Product\Services;
+namespace App\Domain\Product\Category\Services;
 
 use App\Application\Product\DTOs\Category\DeleteCategoryDTO;
 use App\Application\Product\DTOs\Category\StoreCategoryDTO;
 use App\Application\Product\DTOs\Category\UpdateCategoryDTO;
-use App\Domain\Product\Entities\Category;
-use App\Domain\Product\Interfaces\CategoryServiceInterface;
-use App\Domain\Product\Repositories\CategoryRepositoryInterface;
+use App\Domain\Product\Category\Entities\Category;
+use App\Domain\Product\Category\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Category\Repositories\CategoryRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\CategoryMapper;
 use Illuminate\Support\Collection;
 

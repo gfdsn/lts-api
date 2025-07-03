@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Persistence\Product\Eloquent;
 
-use App\Domain\Product\Entities\Category;
-use App\Domain\Product\Repositories\CategoryRepositoryInterface;
+use App\Domain\Product\Category\Entities\Category;
+use App\Domain\Product\Category\Repositories\CategoryRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\CategoryMapper;
 use App\Infrastructure\Persistence\Product\Models\CategoryModel;
 use Illuminate\Support\Collection;

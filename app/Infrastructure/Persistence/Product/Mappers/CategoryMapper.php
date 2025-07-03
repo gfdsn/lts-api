@@ -3,9 +3,9 @@
 namespace App\Infrastructure\Persistence\Product\Mappers;
 
 use App\Application\Product\DTOs\Category\StoreCategoryDTO;
-use App\Domain\Product\Entities\Category;
-use App\Domain\Product\Entities\ValueObjects\Category\CategoryId;
-use App\Domain\Product\Entities\ValueObjects\Category\CategoryName;
+use App\Domain\Product\Category\Entities\Category;
+use App\Domain\Product\Category\Entities\ValueObjects\CategoryId;
+use App\Domain\Product\Category\Entities\ValueObjects\CategoryName;
 use App\Infrastructure\Persistence\Product\Models\CategoryModel;
 
 class CategoryMapper
