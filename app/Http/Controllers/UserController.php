@@ -41,9 +41,15 @@ class UserController extends Controller
 
         $dto = new RegisterUserDTO(...array_values($validated));
 
-        $useCase->execute($dto);
+        try {
+            $useCase->execute($dto);
 
-        return ResponseBuilder::success("User registered successfully", 201);
+            return ResponseBuilder::success("User registered successfully.", 201);
+
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+
     }
 
     /**
@@ -56,9 +62,16 @@ class UserController extends Controller
 
         $dto = new UpdateUserDTO(...array_values($validated));
 
-        $useCase->execute($dto);
 
-        return ResponseBuilder::success("User updated successfully");
+        try {
+            $useCase->execute($dto);
+
+            return ResponseBuilder::success("User updated successfully.");
+
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+
     }
 
     /**
@@ -71,8 +84,13 @@ class UserController extends Controller
 
         $dto = new DeleteUserDTO(...array_values($validated));
 
-        $useCase->execute($dto);
+        try {
+            $useCase->execute($dto);
 
-        return ResponseBuilder::success("User deleted successfully");
+            return ResponseBuilder::success("User deleted successfully.");
+
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
     }
 }

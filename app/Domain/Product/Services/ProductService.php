@@ -2,8 +2,11 @@
 
 namespace App\Domain\Product\Services;
 
+use App\Application\Product\DTOs\DeleteProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
+use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Domain\Product\Entities\Product;
+use App\Domain\Product\Exceptions\ProductRepositoryException;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
@@ -28,5 +31,28 @@ class ProductService implements ProductServiceInterface
         $this->productRepository->save($product);
 
         return $product;
+    }
+
+    public function update(UpdateProductDTO $dto): Product
+    {
+
+        $productModel = $this->productRepository->find($dto->getId());
+        $product = ProductMapper::toDomain($productModel);
+
+        $updatedValues = $dto->toArray();
+
+        /* updated the domain obj */
+        $updatedProduct = $product->update($updatedValues);
+        unset($product);
+
+        /* update the record in the database*/
+        $this->productRepository->update($productModel, $updatedProduct);
+
+        return $updatedProduct;
+    }
+
+    public function delete(DeleteProductDTO $dto): bool
+    {
+       return $this->productRepository->destroy($dto->getId());
     }
 }

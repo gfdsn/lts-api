@@ -18,6 +18,9 @@ class VerifyIfUserIsAdmin
     {
         $user = auth()->user();
 
+        if (!$user)
+            return ResponseBuilder::error("Unauthenticated", 401);
+
         /* verify if user is admin */
         return !$user->is_admin ? ResponseBuilder::error("Forbidden", 403) : $next($request);
 

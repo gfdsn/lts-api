@@ -14,5 +14,6 @@ interface UserServiceInterface
     public function register(RegisterUserDTO $dto): User;
     public function update(UpdateUserDTO $dto): User;
     public function delete(DeleteUserDTO $dto): bool;
+    public function emailExists(string $email): bool;
 }
 

@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Persistence\Product\Eloquent;
 
-use App\Domain\Product\Entities\Category;
-use App\Domain\Product\Repositories\CategoryRepositoryInterface;
+use App\Domain\Product\Category\Entities\Category;
+use App\Domain\Product\Category\Repositories\CategoryRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\CategoryMapper;
 use App\Infrastructure\Persistence\Product\Models\CategoryModel;
 use Illuminate\Support\Collection;
@@ -22,8 +22,20 @@ class CategoryRepository implements CategoryRepositoryInterface
         $categoryModel->save();
     }
 
-    public function update(string $id): void
+    public function update(CategoryModel $categoryModel, Category $updatedCategory): void
     {
-        // TODO: Implement update() method.
+        $categoryModel->update($updatedCategory->toArray());
+    }
+
+    public function find(string $id): CategoryModel
+    {
+        return CategoryModel::find($id);
+    }
+
+    public function destroy(string $id): bool
+    {
+        $category = $this->find($id);
+
+        return $category->delete();
     }
 }
