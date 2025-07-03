@@ -2,20 +2,19 @@
 
 namespace App\Application\Product\UseCases\Category;
 
+use App\Application\Product\DTOs\Category\DeleteCategoryDTO;
 use App\Domain\Product\Interfaces\CategoryServiceInterface;
-use Illuminate\Support\Collection;
 
-readonly class ListAllCategoriesUseCase
+readonly class DeleteCategoryUseCase
 {
 
     public function __construct(
         private CategoryServiceInterface $categoryService
     ){}
 
-
-    public function execute(): Collection
+    public function execute(DeleteCategoryDTO $dto): void
     {
-        return $this->categoryService->getAll();
+        $this->categoryService->delete($dto);
     }
 
 }

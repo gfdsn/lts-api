@@ -2,7 +2,10 @@
 
 namespace App\Infrastructure\Persistence\Product\Mappers;
 
+use App\Application\Product\DTOs\Category\StoreCategoryDTO;
 use App\Domain\Product\Entities\Category;
+use App\Domain\Product\Entities\ValueObjects\Category\CategoryId;
+use App\Domain\Product\Entities\ValueObjects\Category\CategoryName;
 use App\Infrastructure\Persistence\Product\Models\CategoryModel;
 
 class CategoryMapper
@@ -13,5 +16,21 @@ class CategoryMapper
             "id" => $category->getId(),
             "name" => $category->getName(),
         ]);
+    }
+
+    public static function toDomain(CategoryModel $categoryModel): Category
+    {
+        return new Category(
+            new CategoryId($categoryModel->id),
+            new CategoryName($categoryModel->name)
+        );
+    }
+
+    public static function fromDtoToDomain(StoreCategoryDTO $dto): Category
+    {
+        return new Category(
+            new CategoryId(),
+            new CategoryName($dto->getName())
+        );
     }
 }

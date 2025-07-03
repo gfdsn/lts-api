@@ -16,8 +16,11 @@ class CategoryModel extends Model
     protected $table = 'categories';
     protected $keyType = 'uuid';
     public $incrementing = false;
-    protected $fillable = [];
-    protected $casts = [];
+
+    protected $fillable = [
+        "id",
+        "name",
+    ];
 
     public function products(): HasMany
     {

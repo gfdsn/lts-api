@@ -2,20 +2,18 @@
 
 namespace App\Application\Product\UseCases\Category;
 
+use App\Application\Product\DTOs\Category\UpdateCategoryDTO;
 use App\Domain\Product\Interfaces\CategoryServiceInterface;
-use Illuminate\Support\Collection;
 
-readonly class ListAllCategoriesUseCase
+readonly class UpdateCategoryUseCase
 {
 
     public function __construct(
         private CategoryServiceInterface $categoryService
     ){}
 
-
-    public function execute(): Collection
+    public function execute(UpdateCategoryDTO $dto): void
     {
-        return $this->categoryService->getAll();
+        $this->categoryService->update($dto);
     }
-
 }

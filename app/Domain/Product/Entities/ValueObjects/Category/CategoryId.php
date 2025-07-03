@@ -7,16 +7,14 @@ use Illuminate\Support\Str;
 class CategoryId
 {
 
-    private string $value;
-
-    public function __construct()
-    {
-        $this->value = Str::uuid()->toString();
+    public function __construct(
+        private ?string $value = null
+    ){
+        $this->value = $this->value ?? Str::uuid()->toString();
     }
 
     public function getValue(): string
     {
         return $this->value;
     }
-
 }

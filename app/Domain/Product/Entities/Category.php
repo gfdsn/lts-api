@@ -5,17 +5,13 @@ namespace App\Domain\Product\Entities;
 use App\Domain\Product\Entities\ValueObjects\Category\CategoryId;
 use App\Domain\Product\Entities\ValueObjects\Category\CategoryName;
 
-class Category
+class Category implements \JsonSerializable
 {
-    private CategoryId $id;
-    private CategoryName $name;
 
     public function __construct(
-        private string $value
-    ){
-        $this->id = new CategoryId();
-        $this->name = new CategoryName($this->value);
-    }
+        private CategoryId $id,
+        private CategoryName $name,
+    ){}
 
     public function getId(): string
     {
@@ -30,5 +26,20 @@ class Category
     public function toArray(): array
     {
         return ["id" => $this->id->getValue(), "name" => $this->name->getValue()];
+    }
+
+    public function update(string $name): self
+    {
+        return new self(
+            id: $this->id,
+            name: new CategoryName($name) ?? $this->name,
+        );
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            "name" => $this->name->getValue()
+        ];
     }
 }

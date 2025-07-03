@@ -52,8 +52,6 @@ class ProductController extends Controller
 
         $dto = new UpdateProductDTO(...array_values($validated));
 
-        $updatedProduct = $useCase->execute($dto);
-
         try {
             $useCase->execute($dto);
 

@@ -22,8 +22,20 @@ class CategoryRepository implements CategoryRepositoryInterface
         $categoryModel->save();
     }
 
-    public function update(string $id): void
+    public function update(CategoryModel $categoryModel, Category $updatedCategory): void
     {
-        // TODO: Implement update() method.
+        $categoryModel->update($updatedCategory->toArray());
+    }
+
+    public function find(string $id): CategoryModel
+    {
+        return CategoryModel::find($id);
+    }
+
+    public function destroy(string $id): bool
+    {
+        $category = $this->find($id);
+
+        return $category->delete();
     }
 }

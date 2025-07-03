@@ -17,9 +17,7 @@ Route::post("/forgot-password", [AuthController::class, 'forgotPassword']);
 Route::post("/reset-password", [AuthController::class, 'resetPassword']);
 
 /* User CRUD routes */
-Route::group([
-    "prefix" => 'user',
-], function () {
+Route::group(["prefix" => 'user',], function () {
     Route::put('/', [UserController::class, 'update']);
     Route::delete('/', [UserController::class, 'delete']);
     Route::get('/', [UserController::class, 'index']);
@@ -45,4 +43,7 @@ Route::group(["prefix" => "product"], function () {
 /* Categories CRUD routes */
 Route::group(["prefix" => "category"], function () {
     Route::get("/", [CategoryController::class, 'index']);
+    Route::post('/', [CategoryController::class, 'store']);
+    Route::put("/", [CategoryController::class, 'update']);
+    Route::delete('/', [CategoryController::class, 'delete']);
 });
