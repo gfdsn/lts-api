@@ -25,4 +25,15 @@ class ProductRepository implements ProductRepositoryInterface
         $model->save();
     }
 
+    public function update(ProductModel $productModel, Product $updatedProduct): void
+    {
+        $productModel->update($updatedProduct->jsonSerialize());
+    }
+
+    public function find(string $id): ProductModel
+    {
+        return ProductModel::find($id);
+    }
+
+
 }

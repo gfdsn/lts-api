@@ -6,23 +6,26 @@ readonly class ProductClassification
 {
 
     public function __construct(
-        private ProductCategory $category,
-        private ProductCategory $subcategory,
+        private string $category_id,
+        private string $subcategory_id,
     ){}
 
-    public function getCategory(): ProductCategory
+    public function getCategoryId(): string
     {
-        return $this->category;
+        return $this->category_id;
     }
 
-    public function getSubcategory(): ProductCategory
+    public function getSubcategoryId(): string
     {
-        return $this->subcategory;
+        return $this->subcategory_id;
     }
+
+
+
 
     public function toArray(): array
     {
-        return ["category" => $this->category->getName(), "subcategory" => $this->subcategory->getName()];
+        return ["category_id" => $this->category_id, "subcategory_id" => $this->subcategory_id];
     }
 
 }

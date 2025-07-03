@@ -5,9 +5,8 @@ namespace App\Http\Requests\Product;
 use App\Http\Requests\BaseRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends BaseRequest
+class UpdateProductRequest extends BaseRequest
 {
-
     public function authorize(): bool
     {
         return true;
@@ -16,6 +15,7 @@ class StoreProductRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            "id" => "required|uuid|exists:products,id",
             "title" => "required|string",
             "description" => "required|string",
             "attributes.weight" => "required|integer",

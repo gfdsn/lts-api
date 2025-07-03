@@ -23,7 +23,7 @@ class Product implements \JsonSerializable
         public ProductDescription $description,
         public ProductAttribute $attributes, // weight, color
         public ProductMeasure $measures, // width, length, height
-        public ProductClassification $classification, // category, subcategory
+        public ProductClassification $classification, // category_id, subcategory_id
         public ProductPrice $price, // price, shipping price
         public ProductImage $images,
         public ProductDocumentation $documentation,
@@ -86,7 +86,22 @@ class Product implements \JsonSerializable
         return $this->accessories->getAccessories();
     }
 
-    public function update(){}
+    public function update(array $updatedValues): self
+    {
+        return new self(
+            id: $this->id,
+            title: new ProductTitle($updatedValues['title']) ?? $this->title,
+            description: new ProductDescription($updatedValues['description']) ?? $this->description,
+            attributes: new ProductAttribute(...$updatedValues['attributes']) ?? $this->attributes,
+            measures: new ProductMeasure(...$updatedValues['measures']) ?? $this->measures,
+            classification: new ProductClassification(...$updatedValues['classification']) ?? $this->classification,
+            price: new ProductPrice($updatedValues['price']) ?? $this->price,
+            images: new ProductImage($updatedValues['images']) ?? $this->images,
+            documentation: new ProductDocumentation($updatedValues['documentation']) ?? $this->documentation,
+            stock: new ProductStock($updatedValues['stock']) ?? $this->stock,
+            accessories: new ProductAccessories($updatedValues['accessories']) ?? $this->accessories,
+        );
+    }
 
     public function jsonSerialize(): array
     {
@@ -97,7 +112,7 @@ class Product implements \JsonSerializable
             'attributes' => $this->attributes->toArray(),
             'measures' => $this->measures->toArray(),
             'classification' => $this->classification->toArray(),
-            'costs' => $this->price->getValue(),
+            'price' => $this->price->getValue(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
             'stock' => $this->stock->getQuantity(),

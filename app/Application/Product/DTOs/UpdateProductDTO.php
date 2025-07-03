@@ -2,10 +2,11 @@
 
 namespace App\Application\Product\DTOs;
 
-readonly class StoreProductDTO
+readonly class UpdateProductDTO
 {
 
     public function __construct(
+        private string $id,
         private string $title,
         private string $description,
         private array $attributes,
@@ -18,6 +19,13 @@ readonly class StoreProductDTO
         private array $accessories,
 
     ){}
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+
 
     public function getTitle(): string
     {
@@ -77,6 +85,23 @@ readonly class StoreProductDTO
     public function getColor(): string
     {
         return $this->attributes->color;
+    }
+
+
+    public function toArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'description' => $this->description,
+            'attributes' => $this->attributes,
+            'measures' => $this->measures,
+            'classification' => $this->classification,
+            'price' => $this->price,
+            'images' => $this->images,
+            'documentation' => $this->documentation,
+            'stock' => $this->stock,
+            'accessories' => $this->accessories,
+        ];
     }
 
 }
