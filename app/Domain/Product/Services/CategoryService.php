@@ -2,10 +2,11 @@
 
 namespace App\Domain\Product\Services;
 
+use App\Domain\Product\Interfaces\CategoryServiceInterface;
 use App\Domain\Product\Repositories\CategoryRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class CategoryService
+class CategoryService implements CategoryServiceInterface
 {
 
     public function __construct(

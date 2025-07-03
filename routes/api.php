@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Infrastructure\Persistence\User\Models\UserModel;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -24,9 +27,10 @@ Route::group([
 
 // TODO: remove
 Route::get('/test-mail', function () {
-    $user = \App\Infrastructure\Persistence\User\Models\UserModel::where("email", "campoozh@gmail.com")->get()->first();
+    $user = UserModel::where("email", "campoozh@gmail.com")->get()->first();
 
-    \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\ForgotPasswordEmail($user->email, Str::random(60)));
+    Mail::to($user->email)->send(new \App\Mail\ForgotPasswordEmail($user->email, Str::random(60)));
+
     return 'Sent';
 });
 
@@ -35,4 +39,9 @@ Route::get('/test-mail', function () {
 Route::group(["prefix" => "product"], function () {
     Route::get("/", [ProductController::class, 'index']);
     Route::post("/", [ProductController::class, 'store']);
+});
+
+/* Categories CRUD routes */
+Route::group(["prefix" => "category"], function () {
+    Route::get("/", [CategoryController::class, 'index']);
 });

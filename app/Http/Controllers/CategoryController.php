@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Product\Services\CategoryService;
-use Illuminate\Support\Collection;
+use App\Application\Product\UseCases\Category\ListAllCategoriesUseCase;
+use App\Http\Middleware\VerifyIfUserIsAdmin;
+use App\Http\Util\ResponseBuilder;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
 
-    public function __construct(
-        private CategoryService $categoryService
-    ){
-        $this->middleware('auth:api')->only(['index']);
+    public function __construct()
+    {
+        $this->middleware(VerifyIfUserIsAdmin::class);
     }
 
-    public function index(): Collection
+    public function index(ListAllCategoriesUseCase $useCase): JsonResponse
     {
-        return $this->categoryService->getAll();
+        $categories =  $useCase->execute();
+
+        return ResponseBuilder::sendData($categories);
     }
 }

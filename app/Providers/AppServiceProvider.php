@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Domain\Product\Interfaces\CategoryServiceInterface;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
+use App\Domain\Product\Repositories\CategoryRepositoryInterface;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
+use App\Domain\Product\Services\CategoryService;
 use App\Domain\Product\Services\ProductService;
 use App\Domain\User\Contracts\AuthenticatorInterface;
 use App\Domain\User\Interfaces\TokenServiceInterface;
@@ -12,6 +15,7 @@ use App\Domain\User\Repositories\ProfileTypeRepositoryInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\Services\TokenService;
 use App\Domain\User\Services\UserService;
+use App\Infrastructure\Persistence\Product\Eloquent\CategoryRepository;
 use App\Infrastructure\Persistence\Product\Eloquent\ProductRepository;
 use App\Infrastructure\Persistence\User\Auth\Authenticator;
 use App\Infrastructure\Persistence\User\Eloquent\ProfileTypeRepository;
@@ -30,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
             AuthenticatorInterface::class => Authenticator::class,
             ProductServiceInterface::class => ProductService::class,
             ProductRepositoryInterface::class => ProductRepository::class,
+            CategoryServiceInterface::class => CategoryService::class,
+            CategoryRepositoryInterface::class => CategoryRepository::class,
         ];
 
         foreach ($bindings as $interface => $implementation) {

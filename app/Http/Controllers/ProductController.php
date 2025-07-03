@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\UseCases\ListAllProductsUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
+use App\Http\Middleware\VerifyIfUserIsAdmin;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(VerifyIfUserIsAdmin::class);
+    }
+
     public function index(ListAllProductsUseCase $useCase): JsonResponse
     {
         $products = $useCase->execute();
