@@ -11,6 +11,7 @@ use App\Domain\User\Events\UserRegistered;
 use App\Domain\User\Exceptions\UserAuthException;
 use App\Domain\User\Exceptions\UserRepositoryException;
 use App\Domain\User\Interfaces\UserServiceInterface;
+use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use Illuminate\Support\Collection;
@@ -19,7 +20,7 @@ readonly class UserService implements UserServiceInterface
 {
 
     public function __construct(
-        private UserRepository $userRepository
+        private UserRepositoryInterface $userRepository
     ) {}
 
     public function getAll(): Collection
