@@ -24,6 +24,13 @@ class UserModel extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    public function firstName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ucfirst($this->name),
+        );
+    }
+
     public function profileType(): BelongsTo
     {
         return $this->belongsTo(ProfileTypeModel::class);
