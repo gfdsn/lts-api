@@ -82,13 +82,13 @@ readonly class UserService implements UserServiceInterface
         return $this->userRepository->destroy($dto->getId());
     }
 
-    private function emailExists(string $email): bool
+    public function emailExists(string $email): bool
     {
         return $this->userRepository->emailExists($email);
     }
+
     private function verifyPassword(User $user,string $password): bool
     {
         return $user->getPassword()->check($password);
     }
-
 }
