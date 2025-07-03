@@ -6,7 +6,7 @@ use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Domain\Product\Entities\Product;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
 
-class UpdateProductUseCase
+readonly class UpdateProductUseCase
 {
 
     public function __construct(

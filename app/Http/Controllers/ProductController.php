@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Product\DTOs\DeleteProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
+use App\Application\Product\UseCases\DeleteProductUseCase;
 use App\Application\Product\UseCases\ListAllProductsUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
 use App\Application\Product\UseCases\UpdateProductUseCase;
 use App\Http\Middleware\VerifyIfUserIsAdmin;
+use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Util\ResponseBuilder;
@@ -33,12 +36,16 @@ class ProductController extends Controller
         $validated = $request->validated();
         $dto = new StoreProductDTO(...array_values($validated));
 
-        $product = $useCase->execute($dto);
+        try {
+            $product = $useCase->execute($dto);
 
-        return ResponseBuilder::sendData($product, 201);
+            return ResponseBuilder::sendData($product, 201);
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
     }
 
-    public function update(UpdateProductRequest $request, UpdateProductUseCase $useCase)
+    public function update(UpdateProductRequest $request, UpdateProductUseCase $useCase): JsonResponse
     {
 
         $validated = $request->validated();
@@ -47,7 +54,29 @@ class ProductController extends Controller
 
         $updatedProduct = $useCase->execute($dto);
 
-        return ResponseBuilder::sendData($updatedProduct, 204);
+        try {
+            $useCase->execute($dto);
+
+            return ResponseBuilder::success("Product updated successfully.");
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+
+    }
+
+    public function delete(DeleteProductRequest $request, DeleteProductUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $dto = new DeleteProductDTO($validated["id"]);
+
+        try {
+            $useCase->execute($dto);
+
+            return ResponseBuilder::success("Product deleted successfully.");
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
 
     }
 

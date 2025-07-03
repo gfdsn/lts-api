@@ -34,12 +34,12 @@ Route::get('/test-mail', function () {
     return 'Sent';
 });
 
-
 /* Product CRUD routes */
 Route::group(["prefix" => "product"], function () {
     Route::get("/", [ProductController::class, 'index']);
     Route::post("/", [ProductController::class, 'store']);
     Route::put('/', [ProductController::class, 'update']);
+    Route::delete('/', [ProductController::class, 'delete']);
 });
 
 /* Categories CRUD routes */

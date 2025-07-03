@@ -2,6 +2,7 @@
 
 namespace App\Domain\Product\Services;
 
+use App\Application\Product\DTOs\DeleteProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Domain\Product\Entities\Product;
@@ -48,5 +49,10 @@ class ProductService implements ProductServiceInterface
         $this->productRepository->update($productModel, $updatedProduct);
 
         return $updatedProduct;
+    }
+
+    public function delete(DeleteProductDTO $dto): bool
+    {
+       return $this->productRepository->destroy($dto->getId());
     }
 }

@@ -12,4 +12,5 @@ interface ProductRepositoryInterface
     public function save(Product $product): void;
     public function find(string $id): ProductModel;
     public function update(ProductModel $productModel, Product $updatedProduct): void;
+    public function destroy(string $id): bool;
 }
