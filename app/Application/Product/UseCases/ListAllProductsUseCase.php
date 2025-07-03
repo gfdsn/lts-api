@@ -2,19 +2,19 @@
 
 namespace App\Application\Product\UseCases;
 
-use App\Domain\Product\Repositories\ProductRepositoryInterface;
+use App\Domain\Product\Interfaces\ProductServiceInterface;
 use Illuminate\Support\Collection;
 
 readonly class ListAllProductsUseCase
 {
 
     public function __construct(
-        private ProductRepositoryInterface $productRepository
+        private ProductServiceInterface $productService
     ){}
 
     public function execute(): Collection
     {
-        return $this->productRepository->getAll();
+        return $this->productService->getAll();
     }
 
 }

@@ -17,7 +17,7 @@ class ProductModel extends Model
         "attributes",
         "measures",
         "classification",
-        "costs",
+        "price",
         "images",
         "documentation",
         "stock",
@@ -27,7 +27,6 @@ class ProductModel extends Model
         "attributes" => "array",
         "measures" => "array",
         "classification" => "array",
-        "costs" => "array",
         "images" => "array",
         "documentation" => "array",
         "accessories" => "array"

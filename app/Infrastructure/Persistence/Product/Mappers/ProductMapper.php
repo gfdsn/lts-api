@@ -8,7 +8,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductAccessories;
 use App\Domain\Product\Entities\ValueObjects\ProductAttribute;
 use App\Domain\Product\Entities\ValueObjects\ProductCategory;
 use App\Domain\Product\Entities\ValueObjects\ProductClassification;
-use App\Domain\Product\Entities\ValueObjects\ProductCost;
+use App\Domain\Product\Entities\ValueObjects\ProductPrice;
 use App\Domain\Product\Entities\ValueObjects\ProductDescription;
 use App\Domain\Product\Entities\ValueObjects\ProductDocumentation;
 use App\Domain\Product\Entities\ValueObjects\ProductId;
@@ -30,7 +30,7 @@ class ProductMapper
             'attributes' => $product->getAttributes(),
             'measures' => $product->getMeasures(),
             'classification' => $product->getClassification(),
-            'costs' => $product->getCosts(),
+            'price' => $product->getPrice(),
             'images' => $product->getImages(),
             'documentation' => $product->getDocumentation(),
             'stock' => $product->getStock(),
@@ -47,7 +47,7 @@ class ProductMapper
             new ProductAttribute("100", "red"),
             new ProductMeasure("100", "100", "100"),
             new ProductClassification(new ProductCategory("Test category"), new ProductCategory("Test subcategory")),
-            new ProductCost("30", "45"),
+            new ProductPrice("30"),
             new ProductImage(["image1", "image2", "image3"]),
             new ProductDocumentation(["pdf1", "pdf2", "pdf3"]),
             new ProductStock("30"),

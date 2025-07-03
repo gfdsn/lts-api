@@ -5,7 +5,7 @@ namespace App\Domain\Product\Entities;
 use App\Domain\Product\Entities\ValueObjects\ProductAccessories;
 use App\Domain\Product\Entities\ValueObjects\ProductAttribute;
 use App\Domain\Product\Entities\ValueObjects\ProductClassification;
-use App\Domain\Product\Entities\ValueObjects\ProductCost;
+use App\Domain\Product\Entities\ValueObjects\ProductPrice;
 use App\Domain\Product\Entities\ValueObjects\ProductDescription;
 use App\Domain\Product\Entities\ValueObjects\ProductDocumentation;
 use App\Domain\Product\Entities\ValueObjects\ProductId;
@@ -24,7 +24,7 @@ class Product implements \JsonSerializable
         public ProductAttribute $attributes, // weight, color
         public ProductMeasure $measures, // width, length, height
         public ProductClassification $classification, // category, subcategory
-        public ProductCost $costs, // price, shipping price
+        public ProductPrice $price, // price, shipping price
         public ProductImage $images,
         public ProductDocumentation $documentation,
         public ProductStock $stock,
@@ -61,9 +61,9 @@ class Product implements \JsonSerializable
         return $this->classification->toArray();
     }
 
-    public function getCosts(): array
+    public function getPrice(): int
     {
-        return $this->costs->toArray();
+        return $this->price->getValue();
     }
 
     public function getImages(): array
@@ -97,7 +97,7 @@ class Product implements \JsonSerializable
             'attributes' => $this->attributes->toArray(),
             'measures' => $this->measures->toArray(),
             'classification' => $this->classification->toArray(),
-            'costs' => $this->costs->toArray(),
+            'costs' => $this->price->getValue(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
             'stock' => $this->stock->getQuantity(),

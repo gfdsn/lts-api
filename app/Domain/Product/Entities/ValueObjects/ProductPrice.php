@@ -2,30 +2,18 @@
 
 namespace App\Domain\Product\Entities\ValueObjects;
 
-readonly class ProductCost
+readonly class ProductPrice
 {
 
     /* prices here are in cents */
 
     public function __construct(
-        private int $price,
-        private int $shippingPrice
+        private int $value,
     ){}
 
-    public function getPrice(): int
+    public function getValue(): int
     {
-        return $this->price;
+        return $this->value;
     }
-
-    public function getShippingPrice(): int
-    {
-        return $this->shippingPrice;
-    }
-
-    public function toArray(): array
-    {
-        return ["price" => $this->price, "shippingPrice" => $this->shippingPrice];
-    }
-
 
 }

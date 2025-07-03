@@ -33,5 +33,6 @@ Route::get('/test-mail', function () {
 
 /* Product CRUD routes */
 Route::group(["prefix" => "product"], function () {
+    Route::get("/", [ProductController::class, 'index']);
     Route::post("/", [ProductController::class, 'store']);
 });
