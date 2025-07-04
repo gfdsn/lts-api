@@ -26,7 +26,7 @@ class ProductService implements ProductServiceInterface
 
     public function create(StoreProductDTO $dto): Product
     {
-        $product = ProductMapper::fromDtoToDomain($dto);
+        $product = ProductMapper::fromStoreDtoToDomain($dto);
 
         $this->productRepository->save($product);
 

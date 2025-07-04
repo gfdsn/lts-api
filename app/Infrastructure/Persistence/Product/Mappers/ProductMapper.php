@@ -52,7 +52,7 @@ class ProductMapper
         );
     }
 
-    public static function fromDtoToDomain(StoreProductDTO $dto): Product
+    public static function fromStoreDtoToDomain(StoreProductDTO $dto): Product
     {
         return new Product(
             new ProductId(),

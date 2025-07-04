@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->json('attributes');
             $table->json('measures');
-            $table->json('classification');
+            $table->json('classification'); /* TODO: change this to foreign IDs*/
             $table->json('costs');
             $table->json('images');
             $table->json('documentation');

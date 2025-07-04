@@ -2,7 +2,7 @@
 
 namespace App\Application\Product\UseCases\Category;
 
-use App\Domain\Product\Category\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Subdomains\Category\Interfaces\CategoryServiceInterface;
 use Illuminate\Support\Collection;
 
 readonly class ListAllCategoriesUseCase
