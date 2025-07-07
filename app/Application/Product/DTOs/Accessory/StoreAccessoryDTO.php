@@ -12,7 +12,6 @@ readonly class StoreAccessoryDTO implements DTOInterface
         private string $details,
         private int $price,
         private int $stock,
-        private string $product_id,
     ){}
 
     public function getName(): string
@@ -35,13 +34,8 @@ readonly class StoreAccessoryDTO implements DTOInterface
         return $this->stock;
     }
 
-    public function getProductId(): string
-    {
-        return $this->product_id;
-    }
-
     public function toArray(): array
     {
-        return ["name" => $this->name, "details" => $this->details, "price" => $this->price, "stock" => $this->stock, "product_id" => $this->product_id];
+        return ["name" => $this->name, "details" => $this->details, "price" => $this->price, "stock" => $this->stock];
     }
 }

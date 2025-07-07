@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Product\Accessory;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAccessoryRequest extends BaseRequest
 {
@@ -19,7 +18,6 @@ class StoreAccessoryRequest extends BaseRequest
             "details" => "required|string",
             "price" => "required|integer",
             "stock" => "required|integer",
-            "product_id" => "required|uuid|exists:products,id",
         ];
     }
 }

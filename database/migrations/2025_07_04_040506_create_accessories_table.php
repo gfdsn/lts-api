@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string("details");
             $table->integer("price");
             $table->integer("stock");
-            $table->foreignUuid("product_id")->constrained("products");
             $table->timestamps();
         });
     }

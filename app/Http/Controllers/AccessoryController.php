@@ -41,7 +41,8 @@ class AccessoryController extends Controller
             return ResponseBuilder::sendData($accessory, 201);
         }  catch (\Throwable $e) {
 
-            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+            return ResponseBuilder::error($e->getMessage(), 500);
+            //return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
     }

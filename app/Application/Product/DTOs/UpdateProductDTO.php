@@ -15,7 +15,7 @@ readonly class UpdateProductDTO
         private int $price,
         private array $images,
         private array $documentation,
-        private int $stock,
+        private array $availability,
         private array $accessories,
 
     ){}
@@ -72,9 +72,9 @@ readonly class UpdateProductDTO
         return $this->documentation;
     }
 
-    public function getStock(): int
+    public function getAvailability(): array
     {
-        return $this->stock;
+        return $this->availability;
     }
 
     public function getAccessories(): array
@@ -84,7 +84,7 @@ readonly class UpdateProductDTO
 
     public function getColor(): string
     {
-        return $this->attributes->color;
+        return $this->attributes["color"];
     }
 
 

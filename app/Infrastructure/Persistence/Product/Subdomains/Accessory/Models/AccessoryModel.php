@@ -17,7 +17,6 @@ class AccessoryModel extends Model
         "details",
         "price",
         "stock",
-        "product_id"
     ];
 
 }

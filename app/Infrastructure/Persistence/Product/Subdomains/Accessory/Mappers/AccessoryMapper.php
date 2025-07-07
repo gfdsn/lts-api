@@ -29,7 +29,6 @@ class AccessoryMapper
             new AccessoryDetails($accessory->details),
             new AccessoryPrice($accessory->price),
             new AccessoryStock($accessory->stock),
-            new AccessoryProduct($accessory->product_id)
         );
     }
     public static function fromDtoToDomain(DTOInterface $dto): Accessory
@@ -43,7 +42,6 @@ class AccessoryMapper
             new AccessoryDetails($dtoData['details']),
             new AccessoryPrice($dtoData['price']),
             new AccessoryStock($dtoData['stock']),
-            new AccessoryProduct($dtoData['product_id'])
         );
     }
 

@@ -13,7 +13,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductId;
 use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
 use App\Domain\Product\Entities\ValueObjects\ProductPrice;
-use App\Domain\Product\Entities\ValueObjects\ProductStock;
+use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
 use App\Infrastructure\Persistence\Product\Models\ProductModel;
 
@@ -31,7 +31,7 @@ class ProductMapper
             'price' => $product->getPrice(),
             'images' => $product->getImages(),
             'documentation' => $product->getDocumentation(),
-            'stock' => $product->getStock(),
+            'availability' => $product->getAvailability(),
             'accessories' => $product->getAccessories(),
         ]);
     }
@@ -47,7 +47,7 @@ class ProductMapper
             new ProductPrice($model->price),
             new ProductImage($model->images),
             new ProductDocumentation($model->documentation),
-            new ProductStock($model->stock),
+            new ProductAvailability($model->stock),
             new ProductAccessories($model->accessories),
         );
     }
@@ -64,7 +64,7 @@ class ProductMapper
             new ProductPrice($dto->getPrice()),
             new ProductImage($dto->getImages()),
             new ProductDocumentation($dto->getDocumentation()),
-            new ProductStock($dto->getStock()),
+            new ProductAvailability($dto->getStock(), $dto->getAvailabilityId()),
             new ProductAccessories($dto->getAccessories()),
         );
     }
