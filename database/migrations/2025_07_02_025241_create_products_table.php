@@ -18,19 +18,16 @@ return new class extends Migration
             $table->text('description');
             $table->json('attributes');
             $table->json('measures');
-            $table->json('classification');
-            $table->json('costs');
+            $table->json('classification'); /* TODO: change this to foreign IDs*/
+            $table->integer('price');
             $table->json('images');
             $table->json('documentation');
-            $table->integer('stock');
+            $table->json('availability');
             $table->json('accessories');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('products');

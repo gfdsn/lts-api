@@ -41,6 +41,7 @@ class ProductController extends Controller
 
             return ResponseBuilder::sendData($product, 201);
         } catch (\Throwable $e) {
+
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
     }

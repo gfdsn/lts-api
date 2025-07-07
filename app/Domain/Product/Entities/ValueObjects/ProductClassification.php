@@ -20,9 +20,6 @@ readonly class ProductClassification
         return $this->subcategory_id;
     }
 
-
-
-
     public function toArray(): array
     {
         return ["category_id" => $this->category_id, "subcategory_id" => $this->subcategory_id];

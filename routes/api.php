@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -46,4 +47,12 @@ Route::group(["prefix" => "category"], function () {
     Route::post('/', [CategoryController::class, 'store']);
     Route::put("/", [CategoryController::class, 'update']);
     Route::delete('/', [CategoryController::class, 'delete']);
+});
+
+/* Product Accessories CRUD */
+Route::group(["prefix" => "accessory"], function () {
+    Route::get("/", [AccessoryController::class, 'index']);
+    Route::post("/", [AccessoryController::class, 'store']);
+    Route::put("/", [AccessoryController::class, 'update']);
+    Route::delete("/", [AccessoryController::class, 'delete']);
 });

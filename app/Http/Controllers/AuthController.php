@@ -60,13 +60,13 @@ class AuthController extends Controller
 
         try {
             $token = $useCase->execute($dto);
+
+            return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token);
         } catch (UserRepositoryException $e){
             return ResponseBuilder::error($e->getMessage(), 409);
         } catch (\Throwable $e){
            return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
-
-        return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token);
     }
 
     public function logout(LogoutUserRequest $request, LogoutUserUseCase $useCase): JsonResponse

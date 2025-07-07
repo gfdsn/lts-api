@@ -3,8 +3,8 @@
 namespace App\Application\Product\UseCases\Category;
 
 use App\Application\Product\DTOs\Category\StoreCategoryDTO;
-use App\Domain\Product\Category\Entities\Category;
-use App\Domain\Product\Category\Interfaces\CategoryServiceInterface;
+use App\Domain\Product\Subdomains\Category\Entities\Category;
+use App\Domain\Product\Subdomains\Category\Interfaces\CategoryServiceInterface;
 
 readonly class StoreCategoryUseCase
 {

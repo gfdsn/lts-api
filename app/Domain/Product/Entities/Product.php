@@ -11,7 +11,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductDocumentation;
 use App\Domain\Product\Entities\ValueObjects\ProductId;
 use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
-use App\Domain\Product\Entities\ValueObjects\ProductStock;
+use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
 
 class Product implements \JsonSerializable
@@ -19,16 +19,16 @@ class Product implements \JsonSerializable
 
     public function __construct(
         private readonly ProductId $id,
-        public ProductTitle $title,
-        public ProductDescription $description,
-        public ProductAttribute $attributes, // weight, color
-        public ProductMeasure $measures, // width, length, height
-        public ProductClassification $classification, // category_id, subcategory_id
-        public ProductPrice $price, // price, shipping price
-        public ProductImage $images,
-        public ProductDocumentation $documentation,
-        public ProductStock $stock,
-        public ProductAccessories  $accessories, // available accessories for a product
+        private ProductTitle $title,
+        private ProductDescription $description,
+        private ProductAttribute $attributes, // weight, color
+        private ProductMeasure $measures, // width, length, height
+        private ProductClassification $classification, // category_id, subcategory_id
+        private ProductPrice $price, // price, shipping price
+        private ProductImage $images,
+        private ProductDocumentation $documentation,
+        private ProductAvailability $availability,
+        private ProductAccessories  $accessories,// available accessories for a product
     ){}
 
     public function getId(): string
@@ -76,9 +76,9 @@ class Product implements \JsonSerializable
         return $this->documentation->getDocs();
     }
 
-    public function getStock(): int
+    public function getAvailability(): array
     {
-        return $this->stock->getQuantity();
+        return $this->availability->toArray();
     }
 
     public function getAccessories(): array
@@ -98,7 +98,7 @@ class Product implements \JsonSerializable
             price: new ProductPrice($updatedValues['price']) ?? $this->price,
             images: new ProductImage($updatedValues['images']) ?? $this->images,
             documentation: new ProductDocumentation($updatedValues['documentation']) ?? $this->documentation,
-            stock: new ProductStock($updatedValues['stock']) ?? $this->stock,
+            availability: new ProductAvailability($updatedValues['stock'], $updatedValues['availability_id']) ?? $this->availability,
             accessories: new ProductAccessories($updatedValues['accessories']) ?? $this->accessories,
         );
     }
@@ -115,10 +115,9 @@ class Product implements \JsonSerializable
             'price' => $this->price->getValue(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
-            'stock' => $this->stock->getQuantity(),
+            'availability' => $this->availability->toArray(),
             'accessories' => $this->accessories->getAccessories(),
         ];
     }
-
 
 }
