@@ -53,4 +53,6 @@ Route::group(["prefix" => "category"], function () {
 Route::group(["prefix" => "accessory"], function () {
     Route::get("/", [AccessoryController::class, 'index']);
     Route::post("/", [AccessoryController::class, 'store']);
+    Route::put("/", [AccessoryController::class, 'update']);
+    Route::delete("/", [AccessoryController::class, 'delete']);
 });

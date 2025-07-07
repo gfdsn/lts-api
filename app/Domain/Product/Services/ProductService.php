@@ -6,7 +6,6 @@ use App\Application\Product\DTOs\DeleteProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Domain\Product\Entities\Product;
-use App\Domain\Product\Exceptions\ProductRepositoryException;
 use App\Domain\Product\Interfaces\ProductServiceInterface;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
@@ -35,7 +34,6 @@ class ProductService implements ProductServiceInterface
 
     public function update(UpdateProductDTO $dto): Product
     {
-
         $productModel = $this->productRepository->find($dto->getId());
         $product = ProductMapper::toDomain($productModel);
 

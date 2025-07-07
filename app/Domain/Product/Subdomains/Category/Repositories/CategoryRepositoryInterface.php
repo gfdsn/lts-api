@@ -10,7 +10,7 @@ interface CategoryRepositoryInterface
 {
     public function getAll();
     public function save(Category $category): void;
-    public function update(CategoryModel $categoryModel, Category $category): void;
+    public function update(CategoryModel $categoryModel, Category $updatedCategory): void;
     public function find(string $id): CategoryModel;
     public function destroy(string $id): bool;
 }

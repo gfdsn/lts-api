@@ -41,6 +41,28 @@ class Accessory implements \JsonSerializable
         return $this->price->getValue();
     }
 
+    public function getStock(): int
+    {
+        return $this->stock->getValue();
+    }
+
+    public function getProduct(): string
+    {
+        return $this->product->getProductId();
+    }
+
+    public function update(Accessory $updatedValues): self
+    {
+        return new self(
+          id: $this->id,
+          name: new AccessoryName($updatedValues->getName()) ?? $this->name,
+          details: new AccessoryDetails($updatedValues->getDetails()) ?? $this->details,
+          price: new AccessoryPrice($updatedValues->getPrice()) ?? $this->price,
+          stock: new AccessoryStock($updatedValues->getStock()) ?? $this->stock,
+          product: new AccessoryProduct($updatedValues->getProduct()) ?? $this->product
+        );
+    }
+
     public function jsonSerialize(): array
     {
         return [
@@ -53,4 +75,5 @@ class Accessory implements \JsonSerializable
         ];
 
     }
+
 }

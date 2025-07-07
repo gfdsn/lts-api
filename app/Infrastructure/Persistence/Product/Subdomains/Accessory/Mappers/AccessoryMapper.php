@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Product\Subdomains\Accessory\Mappers;
 
+use App\Application\DTOInterface;
 use App\Application\Product\DTOs\Accessory\StoreAccessoryDTO;
 use App\Domain\Product\Subdomains\Accessory\Entities\Accessory;
 use App\Domain\Product\Subdomains\Accessory\Entities\ValueObjects\AccessoryDetails;
@@ -20,15 +21,29 @@ class AccessoryMapper
         return new AccessoryModel($accessory->jsonSerialize());
     }
 
-    public static function fromStoreDtoToDomain(StoreAccessoryDTO $dto): Accessory
+    public static function toDomain(AccessoryModel $accessory): Accessory
     {
         return new Accessory(
+            new AccessoryId($accessory->id),
+            new AccessoryName($accessory->name),
+            new AccessoryDetails($accessory->details),
+            new AccessoryPrice($accessory->price),
+            new AccessoryStock($accessory->stock),
+            new AccessoryProduct($accessory->product_id)
+        );
+    }
+    public static function fromDtoToDomain(DTOInterface $dto): Accessory
+    {
+        /* every AccessoryDTO has the same props besides the id */
+        $dtoData = $dto->toArray();
+
+        return new Accessory(
             new AccessoryId(),
-            new AccessoryName($dto->getName()),
-            new AccessoryDetails($dto->getDetails()),
-            new AccessoryPrice($dto->getPrice()),
-            new AccessoryStock($dto->getStock()),
-            new AccessoryProduct($dto->getProductId())
+            new AccessoryName($dtoData['name']),
+            new AccessoryDetails($dtoData['details']),
+            new AccessoryPrice($dtoData['price']),
+            new AccessoryStock($dtoData['stock']),
+            new AccessoryProduct($dtoData['product_id'])
         );
     }
 

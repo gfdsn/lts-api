@@ -28,7 +28,8 @@ class Product implements \JsonSerializable
         public ProductImage $images,
         public ProductDocumentation $documentation,
         public ProductStock $stock,
-        public ProductAccessories  $accessories, // available accessories for a product
+        public ProductAccessories  $accessories,// available accessories for a product
+            // TODO: adapt this to the Accessories
     ){}
 
     public function getId(): string
@@ -119,6 +120,5 @@ class Product implements \JsonSerializable
             'accessories' => $this->accessories->getAccessories(),
         ];
     }
-
 
 }

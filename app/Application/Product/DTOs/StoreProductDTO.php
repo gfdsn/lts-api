@@ -76,7 +76,7 @@ readonly class StoreProductDTO
 
     public function getColor(): string
     {
-        return $this->attributes->color;
+        return $this->attributes["color"];
     }
 
 }

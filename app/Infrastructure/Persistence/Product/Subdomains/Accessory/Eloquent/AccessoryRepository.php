@@ -15,10 +15,28 @@ class AccessoryRepository implements AccessoryRepositoryInterface
         return AccessoryModel::all();
     }
 
+    public function find(string $id): AccessoryModel
+    {
+        return AccessoryModel::find($id);
+    }
+
     public function save(Accessory $accessory): void
     {
         $accessoryModel = AccessoryMapper::toModel($accessory);
 
         $accessoryModel->save();
+    }
+
+
+    public function update(AccessoryModel $accessoryModel, Accessory $updatedAccessoryValues): void
+    {
+        $accessoryModel->update($updatedAccessoryValues->jsonSerialize());
+    }
+
+    public function destroy(string $id): bool
+    {
+        $accessory = $this->find($id);
+
+        return $accessory->delete();
     }
 }
