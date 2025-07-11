@@ -39,6 +39,7 @@ Route::group(["prefix" => "product"], function () {
     Route::post("/", [ProductController::class, 'store']);
     Route::put('/', [ProductController::class, 'update']);
     Route::delete('/', [ProductController::class, 'delete']);
+    Route::post("/randomProductCount", [ProductController::class, 'randomProductCount']);
 });
 
 /* Categories CRUD routes */

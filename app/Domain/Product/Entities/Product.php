@@ -12,6 +12,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductId;
 use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
 use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
+use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
 
 class Product implements \JsonSerializable
@@ -28,6 +29,7 @@ class Product implements \JsonSerializable
         private ProductImage $images,
         private ProductDocumentation $documentation,
         private ProductAvailability $availability,
+        private ProductStock $stock,
         private ProductAccessories  $accessories,// available accessories for a product
     ){}
 
@@ -76,9 +78,14 @@ class Product implements \JsonSerializable
         return $this->documentation->getDocs();
     }
 
-    public function getAvailability(): array
+    public function getAvailability(): int
     {
-        return $this->availability->toArray();
+        return $this->availability->getValue();
+    }
+
+    public function getStock(): int
+    {
+        return $this->stock->getValue();
     }
 
     public function getAccessories(): array
@@ -98,7 +105,8 @@ class Product implements \JsonSerializable
             price: new ProductPrice($updatedValues['price']) ?? $this->price,
             images: new ProductImage($updatedValues['images']) ?? $this->images,
             documentation: new ProductDocumentation($updatedValues['documentation']) ?? $this->documentation,
-            availability: new ProductAvailability($updatedValues['stock'], $updatedValues['availability_id']) ?? $this->availability,
+            availability: new ProductAvailability($updatedValues['availability_id']) ?? $this->availability,
+            stock: new ProductStock($updatedValues['stock']) ?? $this->stock,
             accessories: new ProductAccessories($updatedValues['accessories']) ?? $this->accessories,
         );
     }
@@ -115,7 +123,8 @@ class Product implements \JsonSerializable
             'price' => $this->price->getValue(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
-            'availability' => $this->availability->toArray(),
+            'availability' => $this->availability->getValue(),
+            'stock' => $this->stock->getValue(),
             'accessories' => $this->accessories->getAccessories(),
         ];
     }

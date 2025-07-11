@@ -2,11 +2,11 @@
 
 namespace App\Domain\Product\Entities\ValueObjects;
 
-readonly class ProductAvailability
+readonly class ProductStock
 {
 
     public function __construct(
-        private int $value
+        private int $value,
     ){}
 
     public function getValue(): int

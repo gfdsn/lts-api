@@ -6,13 +6,17 @@ use App\Application\Product\DTOs\DeleteProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Application\Product\UseCases\DeleteProductUseCase;
+use App\Application\Product\UseCases\GetRandomProductCountUseCase;
 use App\Application\Product\UseCases\ListAllProductsUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
 use App\Application\Product\UseCases\UpdateProductUseCase;
 use App\Http\Middleware\VerifyIfUserIsAdmin;
+use App\Http\Middleware\VerifyUserIdentity;
 use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\RandomProductCountRequest;
+use App\Http\Resources\ProductResource;
 use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
@@ -21,7 +25,8 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        $this->middleware(VerifyIfUserIsAdmin::class);
+        $this->middleware(VerifyIfUserIsAdmin::class)->except('randomProductCount');
+        $this->middleware(VerifyUserIdentity::class)->only('randomProductCount');
     }
 
     public function index(ListAllProductsUseCase $useCase): JsonResponse
@@ -77,6 +82,21 @@ class ProductController extends Controller
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
+    }
+
+    public function randomProductCount(RandomProductCountRequest $request, GetRandomProductCountUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+
+            $products = $useCase->execute($validated["count"]);
+
+            return ResponseBuilder::sendData(ProductResource::collection($products));
+        }catch (\Throwable $e) {
+            return ResponseBuilder::error($e->getMessage(), 500);
+            //return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
     }
 
 }

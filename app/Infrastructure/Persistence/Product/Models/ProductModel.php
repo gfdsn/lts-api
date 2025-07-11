@@ -2,9 +2,12 @@
 
 namespace App\Infrastructure\Persistence\Product\Models;
 
+use App\Infrastructure\Persistence\Product\Subdomains\Accessory\Models\AccessoryModel;
 use App\Infrastructure\Persistence\Product\Subdomains\Availability\Models\AvailabilityModel;
+use App\Infrastructure\Persistence\Product\Subdomains\Category\Models\CategoryModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductModel extends Model
 {
@@ -23,7 +26,8 @@ class ProductModel extends Model
         "price",
         "images",
         "documentation",
-        "availability",
+        "availability_id",
+        "stock",
         "accessories",
         "slug"
     ];
@@ -34,13 +38,34 @@ class ProductModel extends Model
         "classification" => "array",
         "images" => "array",
         "documentation" => "array",
-        "availability" => "array",
         "accessories" => "array"
     ];
 
     public function availability(): BelongsTo
     {
-        return $this->belongsTo(AvailabilityModel::class, 'availability.availability_id');
+        return $this->belongsTo(AvailabilityModel::class, 'availability_id');
     }
+
+    public function getCategoryAttribute()
+    {
+        return CategoryModel::find(optional($this->classification)['category_id']);
+    }
+
+    public function getSubCategoryAttribute()
+    {
+        return CategoryModel::find(optional($this->classification)['subcategory_id']);
+    }
+
+    public function getAccessoriesAttribute()
+    {
+        $ids = json_decode($this->attributes['accessories'] ?? '[]', true);
+
+        if (!is_array($ids) || empty($ids)) {
+            return collect();
+        }
+
+        return AccessoryModel::whereIn('id', $ids)->get();
+    }
+
 
 }

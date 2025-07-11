@@ -3,6 +3,8 @@
 namespace App\Http\Util;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class ResponseBuilder
 {
@@ -20,7 +22,21 @@ class ResponseBuilder
     }
     public static function sendTokenAsCookie(string $message, string $token, int $expirationMinutes = 30): JsonResponse
     {
+
+        $cookie = Cookie::create(
+            'token',
+            $token,
+            now()->addMinutes($expirationMinutes),
+            '/',
+            null, // TODO: change this at production
+            env("APP_USING_HTTPS"),
+            true,
+            false,
+            'Lax'
+        );
+
         return response()->json(["status" => true, "message" => $message])
-            ->withCookie('token', $token, $expirationMinutes, null, null, env("APP_USING_HTTPS"), true);
+            ->withCookie($cookie);
+
     }
 }

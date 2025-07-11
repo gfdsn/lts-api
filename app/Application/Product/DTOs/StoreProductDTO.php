@@ -14,7 +14,8 @@ readonly class StoreProductDTO
         private int $price,
         private array $images,
         private array $documentation,
-        private array $availability,
+        private int $availability_id,
+        private int $stock,
         private array $accessories,
 
     ){}
@@ -66,11 +67,12 @@ readonly class StoreProductDTO
 
     public function getStock(): int
     {
-        return $this->availability["stock"];
+        return $this->stock;
     }
+
     public function getAvailabilityId(): int
     {
-        return $this->availability["availability_id"];
+        return $this->availability_id;
     }
 
     public function getAccessories(): array

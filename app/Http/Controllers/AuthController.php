@@ -40,6 +40,7 @@ class AuthController extends Controller
         try {
             $token = $useCase->execute($dto);
 
+            return ResponseBuilder::sendTokenAsCookie("User logged in successfully.", $token);
         } catch (UserAuthException $e){
             $errorDetails = ["ip" => $request->ip(), "email" => $validated["email"], "error" => $e->getMessage()];
             Log::channel('failed_logins')->warning('There was a failed attempt to login with the following details: '.json_encode($errorDetails));
@@ -48,8 +49,6 @@ class AuthController extends Controller
         } catch (\Throwable $e){
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
-
-        return ResponseBuilder::sendTokenAsCookie("User logged in successfully.", $token);
     }
 
     public function register(StoreUserRequest $request, RegisterUserUseCase $useCase): JsonResponse

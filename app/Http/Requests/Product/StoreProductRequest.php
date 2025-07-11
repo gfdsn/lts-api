@@ -27,8 +27,8 @@ class StoreProductRequest extends BaseRequest
             "price" => "required|integer",
             "images" => "required|array",
             "documentation" => "required|array",
-            "availability.stock" => "required|integer",
-            "availability.availability_id" => "required|integer",
+            "availability_id" => "required|integer|exists:availabilities,id",
+            "stock" => "required|integer",
             "accessories" => "required|array",
             'accessories.*' => 'uuid|exists:accessories,id',
         ];
