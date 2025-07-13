@@ -25,9 +25,11 @@ class UpdateProductRequest extends BaseRequest
             "measures.height" => "required|integer",
             "classification.category_id" => "required|uuid|exists:categories,id",
             "classification.subcategory_id" => "required|uuid|exists:categories,id",
-            "price" => "required|integer",
+            "quotation.price" => "required|integer",
+            "quotation.discount" => "required|integer",
             "images" => "required|array",
             "documentation" => "required|array",
+            "availability_id" => "required|integer|exists:availabilities,id",
             "stock" => "required|integer",
             "accessories" => "required|array",
         ];

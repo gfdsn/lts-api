@@ -2,15 +2,18 @@
 
 namespace App\Infrastructure\Persistence\Product\Models;
 
+use App\Infrastructure\Persistence\Product\Factories\ProductModelFactory;
 use App\Infrastructure\Persistence\Product\Subdomains\Accessory\Models\AccessoryModel;
 use App\Infrastructure\Persistence\Product\Subdomains\Availability\Models\AvailabilityModel;
 use App\Infrastructure\Persistence\Product\Subdomains\Category\Models\CategoryModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductModel extends Model
 {
+
+    use HasFactory;
 
     protected $table = 'products';
     protected $keyType = 'uuid';
@@ -23,7 +26,7 @@ class ProductModel extends Model
         "attributes",
         "measures",
         "classification",
-        "price",
+        "quotation",
         "images",
         "documentation",
         "availability_id",
@@ -38,8 +41,14 @@ class ProductModel extends Model
         "classification" => "array",
         "images" => "array",
         "documentation" => "array",
-        "accessories" => "array"
+        "accessories" => "array",
+        "quotation" => "array"
     ];
+
+    protected static function newFactory(): ProductModelFactory
+    {
+        return ProductModelFactory::new();
+    }
 
     public function availability(): BelongsTo
     {

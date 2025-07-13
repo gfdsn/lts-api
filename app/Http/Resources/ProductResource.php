@@ -21,10 +21,11 @@ class ProductResource extends JsonResource
             "measures" => $this->measures,
             'category' => new CategoryResource($this->category),
             'subcategory' => new CategoryResource($this->subCategory),
-            "price" => $this->price,
+            "quotation" => $this->quotation,
             "images" => $this->images,
             "documentation" => $this->documentation,
             'availability' => new AvailabilityResource($this->availability),
+            "stock" => $this->stock,
             "accessories" => AccessoryResource::collection($this->accessories),
         ];
     }

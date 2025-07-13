@@ -12,7 +12,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductDocumentation;
 use App\Domain\Product\Entities\ValueObjects\ProductId;
 use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
-use App\Domain\Product\Entities\ValueObjects\ProductPrice;
+use App\Domain\Product\Entities\ValueObjects\ProductQuotation;
 use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
 use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
@@ -29,7 +29,7 @@ class ProductMapper
             'attributes' => $product->getAttributes(),
             'measures' => $product->getMeasures(),
             'classification' => $product->getClassification(),
-            'price' => $product->getPrice(),
+            'quotation' => $product->getQuotation(),
             'images' => $product->getImages(),
             'documentation' => $product->getDocumentation(),
             'availability_id' => $product->getAvailability(),
@@ -46,12 +46,12 @@ class ProductMapper
             new ProductAttribute(...$model->attributes),
             new ProductMeasure(...$model->measures),
             new ProductClassification($model->classification["category_id"], $model->classification["subcategory_id"]),
-            new ProductPrice($model->price),
+            new ProductQuotation($model->quotation["price"], $model->quotation["discount_value"]),
             new ProductImage($model->images),
             new ProductDocumentation($model->documentation),
             new ProductAvailability($model->availability_id),
             new ProductStock($model->stock),
-            new ProductAccessories($model->accessories),
+            new ProductAccessories($model->accessories->pluck("id")->toArray()),
         );
     }
 
@@ -64,7 +64,7 @@ class ProductMapper
             new ProductAttribute(...$dto->getAttributes()),
             new ProductMeasure(...$dto->getMeasures()),
             new ProductClassification($dto->getCategory(), $dto->getSubCategory()),
-            new ProductPrice($dto->getPrice()),
+            new ProductQuotation($dto->getPrice(), $dto->getDiscount()),
             new ProductImage($dto->getImages()),
             new ProductDocumentation($dto->getDocumentation()),
             new ProductAvailability($dto->getAvailabilityId()),

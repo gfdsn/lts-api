@@ -17,9 +17,6 @@ class VerifyUserIdentity
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        Log::info($request->cookie('token'));
-
         /* should already have passed the auth:api middleware */
         $user = auth()->user();
 

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Infrastructure\Persistence\Product\Seeders\ProductSeeder;
 use App\Infrastructure\Persistence\Product\Subdomains\Availability\Seeders\AvailabilitySeeder;
 use App\Infrastructure\Persistence\User\Seeders\ProfileTypeSeeder;
 use App\Infrastructure\Persistence\User\Seeders\UserSeeder;
@@ -15,6 +16,7 @@ class DatabaseSeeder extends Seeder
             ProfileTypeSeeder::class,
             UserSeeder::class,
             AvailabilitySeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }

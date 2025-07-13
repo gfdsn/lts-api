@@ -11,7 +11,7 @@ readonly class StoreProductDTO
         private array $attributes,
         private array $measures,
         private array $classification,
-        private int $price,
+        private array $quotation,
         private array $images,
         private array $documentation,
         private int $availability_id,
@@ -52,7 +52,12 @@ readonly class StoreProductDTO
 
     public function getPrice(): int
     {
-        return $this->price;
+        return $this->quotation["price"];
+    }
+
+    public function getDiscount(): int
+    {
+        return $this->quotation["discount"];
     }
 
     public function getImages(): array

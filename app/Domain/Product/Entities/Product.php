@@ -5,7 +5,7 @@ namespace App\Domain\Product\Entities;
 use App\Domain\Product\Entities\ValueObjects\ProductAccessories;
 use App\Domain\Product\Entities\ValueObjects\ProductAttribute;
 use App\Domain\Product\Entities\ValueObjects\ProductClassification;
-use App\Domain\Product\Entities\ValueObjects\ProductPrice;
+use App\Domain\Product\Entities\ValueObjects\ProductQuotation;
 use App\Domain\Product\Entities\ValueObjects\ProductDescription;
 use App\Domain\Product\Entities\ValueObjects\ProductDocumentation;
 use App\Domain\Product\Entities\ValueObjects\ProductId;
@@ -19,18 +19,18 @@ class Product implements \JsonSerializable
 {
 
     public function __construct(
-        private readonly ProductId $id,
-        private ProductTitle $title,
-        private ProductDescription $description,
-        private ProductAttribute $attributes, // weight, color
-        private ProductMeasure $measures, // width, length, height
+        private readonly ProductId    $id,
+        private ProductTitle          $title,
+        private ProductDescription    $description,
+        private ProductAttribute      $attributes, // weight, color
+        private ProductMeasure        $measures, // width, length, height
         private ProductClassification $classification, // category_id, subcategory_id
-        private ProductPrice $price, // price, shipping price
-        private ProductImage $images,
-        private ProductDocumentation $documentation,
-        private ProductAvailability $availability,
-        private ProductStock $stock,
-        private ProductAccessories  $accessories,// available accessories for a product
+        private ProductQuotation      $quotation, // price, shipping price
+        private ProductImage          $images,
+        private ProductDocumentation  $documentation,
+        private ProductAvailability   $availability,
+        private ProductStock          $stock,
+        private ProductAccessories    $accessories,// available accessories for a product
     ){}
 
     public function getId(): string
@@ -63,9 +63,9 @@ class Product implements \JsonSerializable
         return $this->classification->toArray();
     }
 
-    public function getPrice(): int
+    public function getQuotation(): array
     {
-        return $this->price->getValue();
+        return $this->quotation->toArray();
     }
 
     public function getImages(): array
@@ -102,7 +102,7 @@ class Product implements \JsonSerializable
             attributes: new ProductAttribute(...$updatedValues['attributes']) ?? $this->attributes,
             measures: new ProductMeasure(...$updatedValues['measures']) ?? $this->measures,
             classification: new ProductClassification(...$updatedValues['classification']) ?? $this->classification,
-            price: new ProductPrice($updatedValues['price']) ?? $this->price,
+            quotation: new ProductQuotation($updatedValues['quotation']['price'], $updatedValues['quotation']['discount']) ?? $this->quotation,
             images: new ProductImage($updatedValues['images']) ?? $this->images,
             documentation: new ProductDocumentation($updatedValues['documentation']) ?? $this->documentation,
             availability: new ProductAvailability($updatedValues['availability_id']) ?? $this->availability,
@@ -120,7 +120,7 @@ class Product implements \JsonSerializable
             'attributes' => $this->attributes->toArray(),
             'measures' => $this->measures->toArray(),
             'classification' => $this->classification->toArray(),
-            'price' => $this->price->getValue(),
+            'quotation' => $this->quotation->toArray(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
             'availability' => $this->availability->getValue(),

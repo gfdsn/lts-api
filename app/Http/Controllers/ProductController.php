@@ -11,7 +11,6 @@ use App\Application\Product\UseCases\ListAllProductsUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
 use App\Application\Product\UseCases\UpdateProductUseCase;
 use App\Http\Middleware\VerifyIfUserIsAdmin;
-use App\Http\Middleware\VerifyUserIdentity;
 use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -26,14 +25,13 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->middleware(VerifyIfUserIsAdmin::class)->except('randomProductCount');
-        $this->middleware(VerifyUserIdentity::class)->only('randomProductCount');
     }
 
     public function index(ListAllProductsUseCase $useCase): JsonResponse
     {
         $products = $useCase->execute();
 
-        return ResponseBuilder::sendData($products);
+        return ResponseBuilder::sendData(ProductResource::collection($products));
     }
 
     public function store(StoreProductRequest $request, StoreProductUseCase $useCase): JsonResponse
@@ -53,17 +51,18 @@ class ProductController extends Controller
 
     public function update(UpdateProductRequest $request, UpdateProductUseCase $useCase): JsonResponse
     {
-
         $validated = $request->validated();
 
         $dto = new UpdateProductDTO(...array_values($validated));
+
 
         try {
             $useCase->execute($dto);
 
             return ResponseBuilder::success("Product updated successfully.");
         } catch (\Throwable $e) {
-            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+            return ResponseBuilder::error($e->getMessage(), 500);
+//            return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
 
     }
@@ -94,8 +93,8 @@ class ProductController extends Controller
 
             return ResponseBuilder::sendData(ProductResource::collection($products));
         }catch (\Throwable $e) {
-            return ResponseBuilder::error($e->getMessage(), 500);
-            //return ResponseBuilder::error("There was a server error, please try again later.", 500);
+
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
     }
 
