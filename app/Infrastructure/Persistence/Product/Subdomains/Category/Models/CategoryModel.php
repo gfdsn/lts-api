@@ -20,11 +20,13 @@ class CategoryModel extends Model
     protected $fillable = [
         "id",
         "name",
+        "slug",
+        "icon"
     ];
 
     public function products(): HasMany
     {
-        return $this->hasMany(ProductModel::class);
+        return $this->hasMany(ProductModel::class, "classification.category_id", "id");
     }
 
     protected static function newFactory(): CategoryModelFactory

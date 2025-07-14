@@ -17,6 +17,7 @@ class StoreCategoryRequest extends BaseRequest
     {
         return [
             "name" => "required|string",
+            "icon" => "required|string",
         ];
     }
 }

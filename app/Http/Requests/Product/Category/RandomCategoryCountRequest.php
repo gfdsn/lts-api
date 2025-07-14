@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Product\Category;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class RandomProductCountRequest extends BaseRequest
+class RandomCategoryCountRequest extends BaseRequest
 {
+
     public function authorize(): bool
     {
         return true;
     }
+
 
     public function rules(): array
     {

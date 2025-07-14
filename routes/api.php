@@ -48,6 +48,7 @@ Route::group(["prefix" => "category"], function () {
     Route::post('/', [CategoryController::class, 'store']);
     Route::put("/", [CategoryController::class, 'update']);
     Route::delete('/', [CategoryController::class, 'delete']);
+    Route::post("/randomCategoryCount", [CategoryController::class, 'randomCategoryCount']);
 });
 
 /* Product Accessories CRUD */

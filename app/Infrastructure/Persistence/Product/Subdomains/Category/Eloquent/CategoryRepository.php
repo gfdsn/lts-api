@@ -7,6 +7,7 @@ use App\Domain\Product\Subdomains\Category\Repositories\CategoryRepositoryInterf
 use App\Infrastructure\Persistence\Product\Subdomains\Category\Mappers\CategoryMapper;
 use App\Infrastructure\Persistence\Product\Subdomains\Category\Models\CategoryModel;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
@@ -18,6 +19,8 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function save(Category $category): void
     {
         $categoryModel = CategoryMapper::toModel($category);
+
+        $categoryModel->slug = Str::slug($categoryModel->name);
 
         $categoryModel->save();
     }
@@ -37,5 +40,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         $category = $this->find($id);
 
         return $category->delete();
+    }
+
+    public function random(int $count): Collection
+    {
+        return CategoryModel::all()->random($count);
     }
 }

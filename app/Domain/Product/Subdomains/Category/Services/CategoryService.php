@@ -38,7 +38,7 @@ class CategoryService implements CategoryServiceInterface
         $category = CategoryMapper::toDomain($categoryModel);
 
         /* update domain obj */
-        $updatedCategory = $category->update($dto->getName());
+        $updatedCategory = $category->update($dto->getName(), $dto->getIcon());
         unset($category);
 
         /* updated the db record */
@@ -47,9 +47,13 @@ class CategoryService implements CategoryServiceInterface
         return $updatedCategory;
     }
 
-
     public function delete(DeleteCategoryDTO $dto): bool
     {
         return $this->categoryRepository->destroy($dto->getId());
+    }
+
+    public function getRandomCategoryCount(int $count): Collection
+    {
+        return $this->categoryRepository->random($count);
     }
 }

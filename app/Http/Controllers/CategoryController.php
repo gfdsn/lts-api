@@ -6,13 +6,16 @@ use App\Application\Product\DTOs\Category\DeleteCategoryDTO;
 use App\Application\Product\DTOs\Category\StoreCategoryDTO;
 use App\Application\Product\DTOs\Category\UpdateCategoryDTO;
 use App\Application\Product\UseCases\Category\DeleteCategoryUseCase;
+use App\Application\Product\UseCases\Category\GetRandomCategoryCountUseCase;
 use App\Application\Product\UseCases\Category\ListAllCategoriesUseCase;
 use App\Application\Product\UseCases\Category\StoreCategoryUseCase;
 use App\Application\Product\UseCases\Category\UpdateCategoryUseCase;
 use App\Http\Middleware\VerifyIfUserIsAdmin;
 use App\Http\Requests\Product\Category\DeleteCategoryRequest;
+use App\Http\Requests\Product\Category\RandomCategoryCountRequest;
 use App\Http\Requests\Product\Category\StoreCategoryRequest;
 use App\Http\Requests\Product\Category\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
 
@@ -21,21 +24,21 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware(VerifyIfUserIsAdmin::class);
+        $this->middleware(VerifyIfUserIsAdmin::class)->except('randomCategoryCount');
     }
 
     public function index(ListAllCategoriesUseCase $useCase): JsonResponse
     {
         $categories =  $useCase->execute();
 
-        return ResponseBuilder::sendData($categories);
+        return ResponseBuilder::sendData(CategoryResource::collection($categories));
     }
 
     public function store(StoreCategoryRequest $request, StoreCategoryUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
 
-        $dto = new StoreCategoryDTO($validated['name']);
+        $dto = new StoreCategoryDTO(...array_values($validated));
 
         try {
             $category = $useCase->execute($dto);
@@ -79,5 +82,21 @@ class CategoryController extends Controller
         }
 
     }
+
+    public function randomCategoryCount(RandomCategoryCountRequest $request, GetRandomCategoryCountUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+
+        try {
+            $categories = $useCase->execute($validated["count"]);
+
+            return ResponseBuilder::sendData(CategoryResource::collection($categories));
+        }catch (\Throwable $e) {
+
+            return ResponseBuilder::error($e->getMessage(), 500);
+            //return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+    }
+
 
 }

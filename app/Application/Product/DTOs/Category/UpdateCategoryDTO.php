@@ -8,6 +8,7 @@ readonly class UpdateCategoryDTO
     public function __construct(
         private string $id,
         private string $name,
+        private string $icon,
     ){}
 
     public function getId(): string
@@ -18,6 +19,11 @@ readonly class UpdateCategoryDTO
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getIcon(): string
+    {
+        return $this->icon;
     }
 
 }
