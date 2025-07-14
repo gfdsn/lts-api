@@ -3,6 +3,7 @@
 namespace App\Domain\Product\Services;
 
 use App\Application\Product\DTOs\DeleteProductDTO;
+use App\Application\Product\DTOs\RandomProductCountDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Domain\Product\Entities\Product;
@@ -15,7 +16,7 @@ class ProductService implements ProductServiceInterface
 {
 
     public function __construct(
-        private ProductRepositoryInterface $productRepository
+        private readonly ProductRepositoryInterface $productRepository
     ){}
 
     public function getAll(): Collection
@@ -52,5 +53,10 @@ class ProductService implements ProductServiceInterface
     public function delete(DeleteProductDTO $dto): bool
     {
        return $this->productRepository->destroy($dto->getId());
+    }
+
+    public function getRandomProductCount(int $count): Collection
+    {
+        return $this->productRepository->random($count);
     }
 }

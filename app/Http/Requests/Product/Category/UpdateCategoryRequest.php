@@ -17,6 +17,7 @@ class UpdateCategoryRequest extends BaseRequest
         return [
             "id" => "required|uuid|exists:categories,id",
             "name" => "required|string",
+            "icon" => "required|string",
         ];
     }
 }

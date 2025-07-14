@@ -16,6 +16,7 @@ Route::post("/logout", [AuthController::class, 'logout']); /* middleware in the 
 Route::post("/register", [AuthController::class, 'register']);
 Route::post("/forgot-password", [AuthController::class, 'forgotPassword']);
 Route::post("/reset-password", [AuthController::class, 'resetPassword']);
+Route::post("/me", [AuthController::class, 'me']);
 
 /* User CRUD routes */
 Route::group(["prefix" => 'user',], function () {
@@ -39,6 +40,7 @@ Route::group(["prefix" => "product"], function () {
     Route::post("/", [ProductController::class, 'store']);
     Route::put('/', [ProductController::class, 'update']);
     Route::delete('/', [ProductController::class, 'delete']);
+    Route::post("/randomProductCount", [ProductController::class, 'randomProductCount']);
 });
 
 /* Categories CRUD routes */
@@ -47,9 +49,10 @@ Route::group(["prefix" => "category"], function () {
     Route::post('/', [CategoryController::class, 'store']);
     Route::put("/", [CategoryController::class, 'update']);
     Route::delete('/', [CategoryController::class, 'delete']);
+    Route::post("/randomCategoryCount", [CategoryController::class, 'randomCategoryCount']);
 });
 
-/* Product Accessories CRUD */
+/* Product Accessories CRUD routes */
 Route::group(["prefix" => "accessory"], function () {
     Route::get("/", [AccessoryController::class, 'index']);
     Route::post("/", [AccessoryController::class, 'store']);

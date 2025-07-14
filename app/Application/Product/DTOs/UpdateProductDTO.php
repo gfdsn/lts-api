@@ -12,10 +12,11 @@ readonly class UpdateProductDTO
         private array $attributes,
         private array $measures,
         private array $classification,
-        private int $price,
+        private array $quotation,
         private array $images,
         private array $documentation,
-        private array $availability,
+        private int $availability_id,
+        private int $stock,
         private array $accessories,
 
     ){}
@@ -57,9 +58,9 @@ readonly class UpdateProductDTO
         return $this->classification["subcategory_id"];
     }
 
-    public function getPrice(): int
+    public function getQuotation(): array
     {
-        return $this->price;
+        return $this->quotation;
     }
 
     public function getImages(): array
@@ -72,10 +73,16 @@ readonly class UpdateProductDTO
         return $this->documentation;
     }
 
-    public function getAvailability(): array
+    public function getAvailabilityId(): int
     {
-        return $this->availability;
+        return $this->availability_id;
     }
+
+    public function getStock(): int
+    {
+        return $this->stock;
+    }
+
 
     public function getAccessories(): array
     {
@@ -96,9 +103,10 @@ readonly class UpdateProductDTO
             'attributes' => $this->attributes,
             'measures' => $this->measures,
             'classification' => $this->classification,
-            'price' => $this->price,
+            'quotation' => $this->quotation,
             'images' => $this->images,
             'documentation' => $this->documentation,
+            'availability_id' => $this->availability_id,
             'stock' => $this->stock,
             'accessories' => $this->accessories,
         ];

@@ -3,10 +3,10 @@
 namespace App\Http\Requests\Product\Category;
 
 use App\Http\Requests\BaseRequest;
-use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends BaseRequest
+class RandomCategoryCountRequest extends BaseRequest
 {
+
     public function authorize(): bool
     {
         return true;
@@ -16,8 +16,7 @@ class StoreCategoryRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string",
-            "icon" => "required|string",
+            "count" => "required|integer"
         ];
     }
 }

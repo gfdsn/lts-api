@@ -14,4 +14,5 @@ interface CategoryServiceInterface
     public function create(StoreCategoryDTO $dto): Category;
     public function update(UpdateCategoryDTO $dto): Category;
     public function delete(DeleteCategoryDTO $dto): bool;
+    public function getRandomCategoryCount(int $count): Collection;
 }

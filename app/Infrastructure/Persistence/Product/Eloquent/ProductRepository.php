@@ -41,4 +41,10 @@ class ProductRepository implements ProductRepositoryInterface
 
         return $product->delete();
     }
+
+    public function random(int $count): Collection
+    {
+        return ProductModel::with(["availability"])->inRandomOrder()->limit($count)->get();
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Http\Util\ResponseBuilder;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class VerifyUserIdentity
@@ -18,6 +19,7 @@ class VerifyUserIdentity
     {
         /* should already have passed the auth:api middleware */
         $user = auth()->user();
+
         $requestId = $request->route('id') ?? $request->route('user') ?? $request->get('id');
 
         /* user is itself or user is an admin */

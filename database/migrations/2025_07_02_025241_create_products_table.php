@@ -19,10 +19,11 @@ return new class extends Migration
             $table->json('attributes');
             $table->json('measures');
             $table->json('classification'); /* TODO: change this to foreign IDs*/
-            $table->integer('price');
+            $table->json('quotation');
             $table->json('images');
             $table->json('documentation');
-            $table->json('availability');
+            $table->foreignId('availability_id')->references('id')->on('availabilities');
+            $table->integer('stock');
             $table->json('accessories');
             $table->timestamps();
         });
