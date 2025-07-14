@@ -19,7 +19,7 @@ readonly class LoginUserUseCase
     /**
      * @throws UserAuthException
      */
-    public function execute(LoginUserDTO $dto): ?string
+    public function execute(LoginUserDTO $dto): array
     {
 
         /*
@@ -32,7 +32,7 @@ readonly class LoginUserUseCase
 
         $userModel = $this->authenticator->validateLoginPayload($dto->getEmail(), $dto->getPassword());
 
-        return $this->tokenService->generateToken($userModel);
+        return ["token" => $this->tokenService->generateToken($userModel), "user" => $userModel];
     }
 
 }
