@@ -46,7 +46,7 @@ class ProductModelFactory extends Factory
             'documentation' => ["doc1", "doc2", "doc3"],
             'availability_id' => AvailabilityModel::all()->random()->id,
             'stock' => rand(0,100),
-            'accessories' => AccessoryModel::all()->random()->id,
+            'accessories' => AccessoryModel::inRandomOrder()->limit(5)->pluck("id")->toArray(),
         ];
     }
 

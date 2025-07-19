@@ -21,7 +21,7 @@ readonly class RegisterUserUseCase
     /**
      * @throws UserRepositoryException
      */
-    public function execute(RegisterUserDTO $dto): string
+    public function execute(RegisterUserDTO $dto): array
     {
         /*
             validates if email already exists
@@ -34,7 +34,7 @@ readonly class RegisterUserUseCase
 
         $userModel = UserMapper::toModel($user); // User Model
 
-        return $this->tokenService->generateToken($userModel);
+        return ["token" => $this->tokenService->generateToken($userModel), "user" => $userModel];
 
         /* TODO: notify admins bla bla bla*/
 

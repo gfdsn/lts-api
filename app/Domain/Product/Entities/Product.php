@@ -12,6 +12,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductId;
 use App\Domain\Product\Entities\ValueObjects\ProductImage;
 use App\Domain\Product\Entities\ValueObjects\ProductMeasure;
 use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
+use App\Domain\Product\Entities\ValueObjects\ProductSlug;
 use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
 

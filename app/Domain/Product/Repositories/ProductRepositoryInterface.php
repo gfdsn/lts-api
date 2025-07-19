@@ -12,7 +12,9 @@ interface ProductRepositoryInterface
     public function getAll(): Collection;
     public function save(Product $product): void;
     public function find(string $id): ProductModel;
+    public function findBySlug(string $slug): ProductModel;
     public function update(ProductModel $productModel, Product $updatedProduct): void;
     public function destroy(string $id): bool;
     public function random(int $count): Collection;
+
 }

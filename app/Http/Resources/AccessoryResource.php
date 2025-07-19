@@ -19,7 +19,8 @@ class AccessoryResource extends JsonResource
             "name" => $this->name,
             "details" => $this->details,
             "price" => $this->price,
-            "stock" => $this->stock
+            "stock" => $this->stock,
+            "image" => $this->image
         ];
     }
 }

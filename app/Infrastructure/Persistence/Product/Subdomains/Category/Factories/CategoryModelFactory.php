@@ -14,8 +14,9 @@ class CategoryModelFactory extends Factory
     {
         return [
             "id" => $this->faker->uuid(),
-            "name" => $this->faker->firstName(),
+            "name" => $this->faker->name(),
+            "slug" => $this->faker->slug(),
+            "icon" => $this->faker->imageUrl(),
         ];
     }
-
 }
