@@ -40,6 +40,7 @@ Route::group(["prefix" => "product"], function () {
     Route::post("/", [ProductController::class, 'store']);
     Route::put('/', [ProductController::class, 'update']);
     Route::delete('/', [ProductController::class, 'delete']);
+    Route::post('/show', [ProductController::class, 'show']); // id in the request for validation
     Route::post("/randomProductCount", [ProductController::class, 'randomProductCount']);
 });
 

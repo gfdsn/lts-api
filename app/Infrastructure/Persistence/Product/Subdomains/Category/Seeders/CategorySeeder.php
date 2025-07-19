@@ -10,7 +10,7 @@ class CategorySeeder extends Seeder
 
     public function run(): void
     {
-        CategoryModel::factory()->count(10)->create();
+        CategoryModel::factory()->count(20)->create();
     }
 
 }

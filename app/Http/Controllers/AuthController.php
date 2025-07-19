@@ -62,9 +62,9 @@ class AuthController extends Controller
         $dto = new RegisterUserDTO(...array_values($validated));
 
         try {
-            $token = $useCase->execute($dto);
+            $data = $useCase->execute($dto);
 
-            return ResponseBuilder::sendTokenAsCookie("User registered successfully.", $token); // TODO: fix this
+            return ResponseBuilder::sendTokenAsCookie(new UserResource($data["user"]), $data["token"]); // TODO: fix this
         } catch (UserRepositoryException $e){
             return ResponseBuilder::error($e->getMessage(), 409);
         } catch (\Throwable $e){

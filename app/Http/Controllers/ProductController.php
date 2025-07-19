@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Application\Product\DTOs\DeleteProductDTO;
+use App\Application\Product\DTOs\ShowProductDTO;
 use App\Application\Product\DTOs\StoreProductDTO;
 use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Application\Product\UseCases\DeleteProductUseCase;
 use App\Application\Product\UseCases\GetRandomProductCountUseCase;
 use App\Application\Product\UseCases\ListAllProductsUseCase;
+use App\Application\Product\UseCases\ShowProductUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
 use App\Application\Product\UseCases\UpdateProductUseCase;
 use App\Http\Middleware\VerifyIfUserIsAdmin;
 use App\Http\Requests\Product\DeleteProductRequest;
 use App\Http\Requests\Product\RandomProductCountRequest;
+use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -24,7 +27,7 @@ class ProductController extends Controller
 
     public function __construct()
     {
-        $this->middleware(VerifyIfUserIsAdmin::class)->except('randomProductCount');
+        $this->middleware(VerifyIfUserIsAdmin::class)->except(['randomProductCount', "show"]);
     }
 
     public function index(ListAllProductsUseCase $useCase): JsonResponse
@@ -32,6 +35,21 @@ class ProductController extends Controller
         $products = $useCase->execute();
 
         return ResponseBuilder::sendData(ProductResource::collection($products));
+    }
+
+    public function show(ShowProductRequest $request, ShowProductUseCase $useCase): JsonResponse
+    {
+        $validated = $request->validated();
+        $dto = new ShowProductDTO($validated['slug']);
+
+        try {
+            $product = $useCase->execute($dto);
+
+            return ResponseBuilder::sendData(new ProductResource($product));
+        } catch (\Throwable $e) {
+            return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+
     }
 
     public function store(StoreProductRequest $request, StoreProductUseCase $useCase): JsonResponse

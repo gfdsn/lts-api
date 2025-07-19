@@ -35,6 +35,11 @@ class ProductRepository implements ProductRepositoryInterface
         return ProductModel::find($id);
     }
 
+    public function findBySlug(string $slug): ProductModel
+    {
+        return ProductModel::where('slug', $slug)->first();
+    }
+
     public function destroy(string $id): bool
     {
         $product = $this->find($id);
