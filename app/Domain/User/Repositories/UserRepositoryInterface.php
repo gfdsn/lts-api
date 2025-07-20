@@ -11,7 +11,7 @@ interface UserRepositoryInterface
 
     public function getAll(): Collection;
     public function save(User $user): void;
-    public function find(string $id): ?UserModel; // find a user by its id
+    public function find(string $id): UserModel; // find a user by its id
     public function findByEmail(string $email): ?UserModel; // find a user by its email
     public function emailExists(string $email): bool;
     public function exists(string $id): bool;

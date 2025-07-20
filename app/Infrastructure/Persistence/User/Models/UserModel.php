@@ -3,12 +3,14 @@
 namespace App\Infrastructure\Persistence\User\Models;
 
 use App\Domain\User\Enums\UserProfileType;
+use App\Infrastructure\Persistence\Product\Models\ProductModel;
 use App\Infrastructure\Persistence\User\Factories\UserModelFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserModel extends Authenticatable implements JWTSubject
 {
@@ -59,6 +61,11 @@ class UserModel extends Authenticatable implements JWTSubject
             "exp" => time() + 1800, // token lasts 30 minutes
             "is_admin" => $this->profile_type_id == 3,
         ];
+    }
+
+    public function wishlist(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductModel::class, "wishlists", "user_id", "product_id")->withTimestamps();
     }
 
 }

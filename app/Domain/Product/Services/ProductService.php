@@ -29,6 +29,11 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->findBySlug($slug);
     }
 
+    public function findById(string $id): ProductModel
+    {
+        return $this->productRepository->find($id);
+    }
+
     public function create(StoreProductDTO $dto): Product
     {
         $product = ProductMapper::fromStoreDtoToDomain($dto);

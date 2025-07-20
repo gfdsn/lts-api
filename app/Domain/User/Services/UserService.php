@@ -14,6 +14,7 @@ use App\Domain\User\Interfaces\UserServiceInterface;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
+use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Collection;
 
 readonly class UserService implements UserServiceInterface
@@ -26,6 +27,11 @@ readonly class UserService implements UserServiceInterface
     public function getAll(): Collection
     {
         return $this->userRepository->getAll();
+    }
+
+    public function find(string $id): UserModel
+    {
+        return $this->userRepository->find($id);
     }
 
     public function register(RegisterUserDTO $dto): User

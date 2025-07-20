@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishlistController;
 use App\Infrastructure\Persistence\User\Models\UserModel;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -26,12 +27,10 @@ Route::group(["prefix" => 'user',], function () {
 });
 
 // TODO: remove
-Route::get('/test-mail', function () {
-    $user = UserModel::where("email", "campoozh@gmail.com")->get()->first();
+Route::get('/test-wishlist', function () {
+    $user = auth()->user();
 
-    Mail::to($user->email)->send(new \App\Mail\ForgotPasswordEmail($user->email, Str::random(60)));
-
-    return 'Sent';
+    return \App\Http\Resources\ProductResource::collection($user->wishlist);
 });
 
 /* Product CRUD routes */
@@ -60,3 +59,11 @@ Route::group(["prefix" => "accessory"], function () {
     Route::put("/", [AccessoryController::class, 'update']);
     Route::delete("/", [AccessoryController::class, 'delete']);
 });
+
+/* Wishlist routes */
+Route::group(["prefix" => "wishlist"], function () {
+    Route::post("/get", [WishlistController::class, 'getUserWishlist']);
+    Route::post("/add", [WishlistController::class, 'addProductToWishlist']);
+    Route::post("/remove", [WishlistController::class, 'removeProductToWishlist']);
+});
+

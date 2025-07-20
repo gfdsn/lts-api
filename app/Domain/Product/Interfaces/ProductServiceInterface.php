@@ -11,9 +11,9 @@ use Illuminate\Support\Collection;
 
 interface ProductServiceInterface
 {
-
     public function getAll(): Collection;
     public function find(string $slug): ProductModel;
+    public function findById(string $id): ProductModel;
     public function create(StoreProductDTO $dto): Product;
     public function update(UpdateProductDTO $dto): Product;
     public function delete(DeleteProductDTO $dto): bool;

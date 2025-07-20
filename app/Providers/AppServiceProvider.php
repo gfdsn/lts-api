@@ -20,6 +20,8 @@ use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Domain\User\Services\AuthService;
 use App\Domain\User\Services\TokenService;
 use App\Domain\User\Services\UserService;
+use App\Domain\User\Subdomains\Wishlist\Interface\WishlistServiceInterface;
+use App\Domain\User\Subdomains\Wishlist\Services\WishlistService;
 use App\Infrastructure\Persistence\Product\Eloquent\ProductRepository;
 use App\Infrastructure\Persistence\Product\Subdomains\Accessory\Eloquent\AccessoryRepository;
 use App\Infrastructure\Persistence\Product\Subdomains\Category\Eloquent\CategoryRepository;
@@ -45,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
             AuthServiceInterface::class => AuthService::class,
             AccessoryServiceInterface::class => AccessoryService::class,
             AccessoryRepositoryInterface::class  => AccessoryRepository::class,
+            WishListServiceInterface::class => WishListService::class,
         ];
 
         foreach ($bindings as $interface => $implementation) {

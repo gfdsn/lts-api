@@ -42,7 +42,6 @@ class ResponseBuilder
         ])->withCookie($cookie);
 
     }
-
     public static function sendLogoutTokenAsCookie(string $token, int $expirationMinutes = 30): JsonResponse
     {
 
