@@ -2,14 +2,12 @@
 
 use App\Http\Controllers\AccessoryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
-use App\Infrastructure\Persistence\User\Models\UserModel;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 /* Auth routes */
 Route::post("/login", [AuthController::class, 'login'])->name('login');
@@ -67,3 +65,10 @@ Route::group(["prefix" => "wishlist"], function () {
     Route::post("/remove", [WishlistController::class, 'removeProductToWishlist']);
 });
 
+/* Cart routes */
+Route::group(["prefix" => "cart"], function () {
+    Route::post("/get", [CartController::class, 'getUserCart']);
+    Route::post("/add", [CartController::class, 'addToCart']);
+    Route::post("/remove", [CartController::class, 'removeFromCart']);
+    Route::post("/clear", [CartController::class, 'clearCart']);
+});

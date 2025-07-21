@@ -41,7 +41,7 @@ class WishlistController extends Controller
         }
     }
 
-    public function removeProductToWishlist(UpdateUserWishlistRequest $request, RemoveProductToWishlistUseCase $useCase)
+    public function removeProductToWishlist(UpdateUserWishlistRequest $request, RemoveProductToWishlistUseCase $useCase): JsonResponse
     {
         $validated = $request->validated();
         $dto = new UpdateUserWishlistDTO(...array_values($validated));

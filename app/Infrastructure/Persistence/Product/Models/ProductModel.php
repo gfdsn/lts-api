@@ -19,8 +19,6 @@ class ProductModel extends Model
     protected $keyType = 'uuid';
     public $incrementing = false;
 
-    protected $hidden = ['pivot'];
-
     protected $fillable = [
         "id",
         "title",

@@ -19,6 +19,7 @@ class UserModel extends Authenticatable implements JWTSubject
     protected $table = 'users';
     protected $keyType = 'uuid';
     public $incrementing = false;
+
     protected $fillable = [
         'id',
         'name',
@@ -66,6 +67,13 @@ class UserModel extends Authenticatable implements JWTSubject
     public function wishlist(): BelongsToMany
     {
         return $this->belongsToMany(ProductModel::class, "wishlists", "user_id", "product_id")->withTimestamps();
+    }
+
+    public function cart(): BelongsToMany
+    {
+        return $this->belongsToMany(ProductModel::class, "carts", "user_id", "product_id")
+            ->withPivot("quantity")
+            ->withTimestamps();
     }
 
 }
