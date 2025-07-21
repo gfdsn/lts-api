@@ -54,8 +54,11 @@ class CartService implements CartServiceInterface
         return $user->cart->sum(function ($product) {
             $quantity = $product->pivot->quantity ?? 1;
             $price = $product->quotation["price"] / 100 ?? 0;
+            $discount_value = max($product->quotation["discount_value"], 0) / 100;
 
-            return number_format($price * $quantity, 2, ".", ".");
+            $finalPrice = $price - ($price * $discount_value);
+
+            return number_format($finalPrice * $quantity, 2, ".", ".");
         });
     }
 }
