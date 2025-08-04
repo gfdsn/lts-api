@@ -6,6 +6,7 @@ use App\Domain\Product\Entities\Product;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
 use App\Infrastructure\Persistence\Product\Models\ProductModel;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -52,4 +53,13 @@ class ProductRepository implements ProductRepositoryInterface
         return ProductModel::with(["availability"])->inRandomOrder()->limit($count)->get();
     }
 
+    public function getAllPaginated(int $perPage): LengthAwarePaginator
+    {
+        return ProductModel::paginate($perPage);
+    }
+
+    public function search(string $searchQuery): Collection
+    {
+        return ProductModel::query()->where("title", "LIKE", "%".$searchQuery."%")->get();
+    }
 }

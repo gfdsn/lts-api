@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ProductResource extends JsonResource
 {
@@ -32,4 +34,6 @@ class ProductResource extends JsonResource
             "accessories" => AccessoryResource::collection($this->accessories),
         ];
     }
+
+
 }

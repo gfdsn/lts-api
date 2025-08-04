@@ -76,5 +76,4 @@ class ProductModel extends Model
         return AccessoryModel::whereIn('id', $ids)->get();
     }
 
-
 }

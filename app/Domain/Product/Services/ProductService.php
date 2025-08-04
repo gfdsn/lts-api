@@ -10,6 +10,7 @@ use App\Domain\Product\Interfaces\ProductServiceInterface;
 use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
 use App\Infrastructure\Persistence\Product\Models\ProductModel;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class ProductService implements ProductServiceInterface
@@ -68,5 +69,12 @@ class ProductService implements ProductServiceInterface
     public function getRandomProductCount(int $count): Collection
     {
         return $this->productRepository->random($count);
+    }
+
+    public function search(string $searchQuery): Collection|LengthAwarePaginator
+    {
+        if (empty($searchQuery)) return $this->productRepository->getAllPaginated(20);
+
+        return $this->productRepository->search($searchQuery);
     }
 }

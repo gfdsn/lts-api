@@ -39,6 +39,7 @@ Route::group(["prefix" => "product"], function () {
     Route::delete('/', [ProductController::class, 'delete']);
     Route::post('/show', [ProductController::class, 'show']); // id in the request for validation
     Route::post("/randomProductCount", [ProductController::class, 'randomProductCount']);
+    Route::get("/search", [ProductController::class, 'search']);
 });
 
 /* Categories CRUD routes */
@@ -48,6 +49,7 @@ Route::group(["prefix" => "category"], function () {
     Route::put("/", [CategoryController::class, 'update']);
     Route::delete('/', [CategoryController::class, 'delete']);
     Route::post("/randomCategoryCount", [CategoryController::class, 'randomCategoryCount']);
+    Route::get('/filter', [CategoryController::class, 'filter']);
 });
 
 /* Product Accessories CRUD routes */

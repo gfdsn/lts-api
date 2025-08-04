@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserModel extends Authenticatable implements JWTSubject
@@ -17,7 +18,7 @@ class UserModel extends Authenticatable implements JWTSubject
     use HasFactory;
 
     protected $table = 'users';
-    protected $keyType = 'uuid';
+    protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
@@ -74,6 +75,17 @@ class UserModel extends Authenticatable implements JWTSubject
         return $this->belongsToMany(ProductModel::class, "carts", "user_id", "product_id")
             ->withPivot("quantity")
             ->withTimestamps();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
     }
 
 }

@@ -9,6 +9,7 @@ use App\Application\Product\DTOs\UpdateProductDTO;
 use App\Application\Product\UseCases\DeleteProductUseCase;
 use App\Application\Product\UseCases\GetRandomProductCountUseCase;
 use App\Application\Product\UseCases\ListAllProductsUseCase;
+use App\Application\Product\UseCases\SearchProductsUseCase;
 use App\Application\Product\UseCases\ShowProductUseCase;
 use App\Application\Product\UseCases\StoreProductUseCase;
 use App\Application\Product\UseCases\UpdateProductUseCase;
@@ -18,16 +19,19 @@ use App\Http\Requests\Product\RandomProductCountRequest;
 use App\Http\Requests\Product\ShowProductRequest;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Requests\SearchProductsRequest;
+use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Http\Util\ResponseBuilder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware(VerifyIfUserIsAdmin::class)->except(['randomProductCount', "show"]);
+        $this->middleware(VerifyIfUserIsAdmin::class)->except(['randomProductCount', "show", "search"]);
     }
 
     public function index(ListAllProductsUseCase $useCase): JsonResponse
@@ -113,6 +117,20 @@ class ProductController extends Controller
         }catch (\Throwable $e) {
 
             return ResponseBuilder::error("There was a server error, please try again later.", 500);
+        }
+    }
+
+    public function search(SearchProductsRequest $request, SearchProductsUseCase $useCase): JsonResponse
+    {
+        try {
+            $products = $useCase->execute($request->query("q") ?? "");
+
+            if ($products instanceof LengthAwarePaginator) return ResponseBuilder::sendData(new ProductCollection($products));
+
+            return ResponseBuilder::sendData(ProductResource::collection($products));
+        }catch (\Throwable $e) {
+            return ResponseBuilder::error($e->getMessage(), 500);
+            //return ResponseBuilder::error("There was a server error, please try again later.", 500);
         }
     }
 

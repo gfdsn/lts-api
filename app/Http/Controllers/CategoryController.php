@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware(VerifyIfUserIsAdmin::class)->except('randomCategoryCount');
+        $this->middleware(VerifyIfUserIsAdmin::class)->except(['randomCategoryCount', 'filter']);
     }
 
     public function index(ListAllCategoriesUseCase $useCase): JsonResponse
@@ -32,6 +32,15 @@ class CategoryController extends Controller
         $categories =  $useCase->execute();
 
         return ResponseBuilder::sendData(CategoryResource::collection($categories));
+    }
+
+    public function filter(ListAllCategoriesUseCase $useCase): JsonResponse
+    {
+        $categories =  $useCase->execute();
+
+        return ResponseBuilder::sendData(
+            collect(CategoryResource::collection($categories))->map(fn ($category) => collect($category)->only(['id', 'name']))
+        );
     }
 
     public function store(StoreCategoryRequest $request, StoreCategoryUseCase $useCase): JsonResponse
