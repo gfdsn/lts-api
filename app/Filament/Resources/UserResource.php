@@ -18,8 +18,8 @@ class UserResource extends Resource
 
     protected static ?string $label = 'Users';
     protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?string $navigationLabel = 'User';
-    //protected static ?string $navigationGroup = 'Settings';
+    protected static ?string $navigationLabel = 'Users';
+    protected static ?string $navigationGroup = 'Management';
 
     public static function form(Form $form): Form
     {
@@ -32,7 +32,6 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('profile_type_id')
                     ->numeric()
                     ->default(1),
@@ -40,7 +39,6 @@ class UserResource extends Resource
                     ->required(),
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table

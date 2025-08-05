@@ -6,6 +6,7 @@ use App\Domain\User\Entities\User;
 use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use App\Infrastructure\Persistence\User\Models\UserModel;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
@@ -61,4 +62,8 @@ class UserRepository implements UserRepositoryInterface
         return UserModel::find($id)->exists();
     }
 
+    public function monthlyUsers(string $month): Collection
+    {
+        return UserModel::whereMonth('created_at', $month)->get();
+    }
 }

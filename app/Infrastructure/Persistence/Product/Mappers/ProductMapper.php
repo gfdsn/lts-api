@@ -16,6 +16,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductQuotation;
 use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
 use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
+use App\Domain\Product\Entities\ValueObjects\ProductVisibility;
 use App\Infrastructure\Persistence\Product\Models\ProductModel;
 
 class ProductMapper
@@ -32,9 +33,9 @@ class ProductMapper
             'quotation' => $product->getQuotation(),
             'images' => $product->getImages(),
             'documentation' => $product->getDocumentation(),
-            'availability_id' => $product->getAvailability(),
             'stock' => $product->getStock(),
             'accessories' => $product->getAccessories(),
+            'visibility' => $product->getVisibility(),
         ]);
     }
     public static function toDomain(ProductModel $model): Product
@@ -49,9 +50,9 @@ class ProductMapper
             new ProductQuotation($model->quotation["price"], $model->quotation["discount_value"]),
             new ProductImage($model->images),
             new ProductDocumentation($model->documentation),
-            new ProductAvailability($model->availability_id),
             new ProductStock($model->stock),
             new ProductAccessories($model->accessories->pluck("id")->toArray()),
+            new ProductVisibility($model->visiblity)
         );
     }
 
@@ -67,9 +68,9 @@ class ProductMapper
             new ProductQuotation($dto->getPrice(), $dto->getDiscount()),
             new ProductImage($dto->getImages()),
             new ProductDocumentation($dto->getDocumentation()),
-            new ProductAvailability($dto->getAvailabilityId()),
             new ProductStock($dto->getStock()),
             new ProductAccessories($dto->getAccessories()),
+            new ProductVisibility(true)
         );
     }
 }

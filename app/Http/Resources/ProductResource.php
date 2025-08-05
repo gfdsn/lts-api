@@ -29,9 +29,9 @@ class ProductResource extends JsonResource
             "quotation" => $this->quotation,
             "images" => $this->images,
             "documentation" => $this->documentation,
-            'availability' => new AvailabilityResource($this->availability),
             "stock" => $this->stock,
             "accessories" => AccessoryResource::collection($this->accessories),
+            "visibility" => $this->visibility
         ];
     }
 

@@ -15,6 +15,7 @@ use App\Domain\User\Repositories\UserRepositoryInterface;
 use App\Infrastructure\Persistence\User\Eloquent\UserRepository;
 use App\Infrastructure\Persistence\User\Mappers\UserMapper;
 use App\Infrastructure\Persistence\User\Models\UserModel;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 readonly class UserService implements UserServiceInterface
@@ -96,5 +97,20 @@ readonly class UserService implements UserServiceInterface
     private function verifyPassword(User $user,string $password): bool
     {
         return $user->getPassword()->check($password);
+    }
+
+    public function monthlyStats(): array
+    {
+        $totalUsers = count($this->userRepository->getAll());
+        $monthlyUsers = count($this->userRepository->monthlyUsers(Carbon::now()->month));
+        $lastMonthTotalUsers = count($this->userRepository->monthlyUsers(Carbon::now()->subMonth()->month));
+
+        $percentage = $lastMonthTotalUsers > 0 ? ($monthlyUsers / $lastMonthTotalUsers) * 100 : 0;
+
+        return [
+            "totalUsers" => $totalUsers,
+            "monthlyUsersCount" => $monthlyUsers,
+            "monthlyIncreasePercentage" => number_format($percentage, 1, ".", ",")
+        ];
     }
 }

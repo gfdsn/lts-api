@@ -29,10 +29,10 @@ class ProductModel extends Model
         "quotation",
         "images",
         "documentation",
-        "availability_id",
         "stock",
         "accessories",
-        "slug"
+        "slug",
+        "visibility"
     ];
 
     protected $casts = [

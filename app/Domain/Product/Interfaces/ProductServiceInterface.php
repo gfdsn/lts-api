@@ -20,4 +20,5 @@ interface ProductServiceInterface
     public function delete(DeleteProductDTO $dto): bool;
     public function getRandomProductCount(int $count): Collection;
     public function search(string $searchQuery): Collection|LengthAwarePaginator;
+    public function monthlyStats(): array;
 }

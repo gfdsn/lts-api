@@ -15,6 +15,7 @@ use App\Domain\Product\Entities\ValueObjects\ProductAvailability;
 use App\Domain\Product\Entities\ValueObjects\ProductSlug;
 use App\Domain\Product\Entities\ValueObjects\ProductStock;
 use App\Domain\Product\Entities\ValueObjects\ProductTitle;
+use App\Domain\Product\Entities\ValueObjects\ProductVisibility;
 
 class Product implements \JsonSerializable
 {
@@ -29,9 +30,9 @@ class Product implements \JsonSerializable
         private ProductQuotation      $quotation, // price, shipping price
         private ProductImage          $images,
         private ProductDocumentation  $documentation,
-        private ProductAvailability   $availability,
         private ProductStock          $stock,
         private ProductAccessories    $accessories,// available accessories for a product
+        private ProductVisibility     $visibility,
     ){}
 
     public function getId(): string
@@ -79,11 +80,6 @@ class Product implements \JsonSerializable
         return $this->documentation->getDocs();
     }
 
-    public function getAvailability(): int
-    {
-        return $this->availability->getValue();
-    }
-
     public function getStock(): int
     {
         return $this->stock->getValue();
@@ -92,6 +88,11 @@ class Product implements \JsonSerializable
     public function getAccessories(): array
     {
         return $this->accessories->getAccessories();
+    }
+
+    public function getVisibility(): bool
+    {
+        return $this->visibility->getValue();
     }
 
     public function update(array $updatedValues): self
@@ -106,9 +107,9 @@ class Product implements \JsonSerializable
             quotation: new ProductQuotation($updatedValues['quotation']['price'], $updatedValues['quotation']['discount']) ?? $this->quotation,
             images: new ProductImage($updatedValues['images']) ?? $this->images,
             documentation: new ProductDocumentation($updatedValues['documentation']) ?? $this->documentation,
-            availability: new ProductAvailability($updatedValues['availability_id']) ?? $this->availability,
             stock: new ProductStock($updatedValues['stock']) ?? $this->stock,
             accessories: new ProductAccessories($updatedValues['accessories']) ?? $this->accessories,
+            visibility: new ProductVisibility($updatedValues['visibility']) ?? $this->visibility,
         );
     }
 
@@ -124,9 +125,9 @@ class Product implements \JsonSerializable
             'quotation' => $this->quotation->toArray(),
             'images' => $this->images->getImages(),
             'documentation' => $this->documentation->getDocs(),
-            'availability' => $this->availability->getValue(),
             'stock' => $this->stock->getValue(),
             'accessories' => $this->accessories->getAccessories(),
+            'visibility' => $this->visibility->getValue(),
         ];
     }
 

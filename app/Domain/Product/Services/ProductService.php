@@ -11,6 +11,7 @@ use App\Domain\Product\Repositories\ProductRepositoryInterface;
 use App\Infrastructure\Persistence\Product\Mappers\ProductMapper;
 use App\Infrastructure\Persistence\Product\Models\ProductModel;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ProductService implements ProductServiceInterface
@@ -76,5 +77,20 @@ class ProductService implements ProductServiceInterface
         if (empty($searchQuery)) return $this->productRepository->getAllPaginated(20);
 
         return $this->productRepository->search($searchQuery);
+    }
+
+    public function monthlyStats(): array
+    {
+        $totalProducts = count($this->getAll());
+        $monthlyProducts = count($this->productRepository->monthlyProducts(Carbon::now()->month));
+        $lastMonthProducts = count($this->productRepository->monthlyProducts(Carbon::now()->subMonth()->month));
+
+        $percentage = $lastMonthProducts > 0 ? ($monthlyProducts / $lastMonthProducts) * 100 : 0;
+
+        return [
+            "totalProducts" => $totalProducts,
+            "monthlyProductsCount" => $monthlyProducts,
+            "monthlyIncreasePercentage" => number_format($percentage, 1, ".", ",")
+        ];
     }
 }

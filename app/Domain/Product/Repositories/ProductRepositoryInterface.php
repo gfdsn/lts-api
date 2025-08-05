@@ -18,5 +18,5 @@ interface ProductRepositoryInterface
     public function update(ProductModel $productModel, Product $updatedProduct): void;
     public function destroy(string $id): bool;
     public function random(int $count): Collection;
-
+    public function monthlyProducts(string $month): Collection;
 }

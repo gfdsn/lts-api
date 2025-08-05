@@ -2,16 +2,15 @@
 
 namespace App\Domain\Product\Entities\ValueObjects;
 
-readonly class ProductAvailability
+readonly class ProductVisibility
 {
 
     public function __construct(
-        private int $value
+        private bool $value = true
     ){}
 
-    public function getValue(): int
+    public function getValue(): bool
     {
         return $this->value;
     }
-
 }

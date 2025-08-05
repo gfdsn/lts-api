@@ -20,6 +20,9 @@ class ProductModelFactory extends Factory
     public function definition(): array
     {
         $title = $this->faker->name();
+        $price = rand(1000, 10000);
+        $discount = rand(0, 25);
+
         return [
             'id' => $this->faker->uuid(),
             'title' => $title,
@@ -39,12 +42,12 @@ class ProductModelFactory extends Factory
                 "subcategory_id" => CategoryModel::all()->random()->id,
             ],
             'quotation' => [
-                "price" => rand(1000, 10000),
-                "discount_value" => rand(0, 25),
+                "price" => $price,
+                "final_price" => $price - ($price * ($discount / 100)),
+                "discount_value" => $discount,
             ],
             'images' => ["/assets/products/product_template.jpg", "/assets/products/product_template.jpg", "/assets/products/product_template.jpg"],
             'documentation' => ["doc1", "doc2", "doc3"],
-            'availability_id' => AvailabilityModel::all()->random()->id,
             'stock' => rand(0,100),
             'accessories' => AccessoryModel::inRandomOrder()->limit(5)->pluck("id")->toArray(),
         ];

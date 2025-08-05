@@ -14,10 +14,8 @@ readonly class StoreProductDTO
         private array $quotation,
         private array $images,
         private array $documentation,
-        private int $availability_id,
         private int $stock,
         private array $accessories,
-
     ){}
 
     public function getTitle(): string

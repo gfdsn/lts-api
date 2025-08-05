@@ -62,4 +62,9 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return ProductModel::query()->where("title", "LIKE", "%".$searchQuery."%")->get();
     }
+
+    public function monthlyProducts(string $month): Collection
+    {
+        return ProductModel::whereMonth('created_at', $month)->get();
+    }
 }

@@ -16,9 +16,10 @@ class UsersOverview extends BaseWidget
     public function mount(): void
     {
         $userService = app(UserServiceInterface::class);
+        $monthlyStats = $userService->monthlyStats();
 
-        $this->totalUsers = count($userService->getAll());
-        $this->totalUsersMonthly = "10,000";
-        $this->increasePercentage = "12,5";
+        $this->totalUsers = $monthlyStats["totalUsers"];
+        $this->totalUsersMonthly = $monthlyStats["monthlyUsersCount"];
+        $this->increasePercentage = $monthlyStats["monthlyIncreasePercentage"];
     }
 }
