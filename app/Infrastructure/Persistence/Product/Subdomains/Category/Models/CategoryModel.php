@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Product\Subdomains\Category\Factories\Categor
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class CategoryModel extends Model
 {
@@ -32,6 +33,17 @@ class CategoryModel extends Model
     protected static function newFactory(): CategoryModelFactory
     {
         return CategoryModelFactory::new();
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (string) Str::uuid();
+            }
+        });
     }
 
 }

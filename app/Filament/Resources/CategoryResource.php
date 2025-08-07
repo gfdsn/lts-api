@@ -2,25 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Filament\Resources\UserResource\Widgets\UsersOverview;
-use App\Infrastructure\Persistence\User\Models\UserModel;
+use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Infrastructure\Persistence\Product\Subdomains\Category\Models\CategoryModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
 
-class UserResource extends Resource
+class CategoryResource extends Resource
 {
-    protected static ?string $model = UserModel::class;
-
-    protected static ?string $label = 'Users';
-    protected static ?string $navigationLabel = 'Users';
-    protected static ?string $navigationGroup = 'Users';
-    protected static ?string $navigationIcon = 'heroicon-o-user';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $model = CategoryModel::class;
+    protected static ?string $recordRouteKeyName = 'id';
+    protected static ?string $label = 'Categories';
+    protected static ?string $navigationLabel = 'Categories';
+    protected static ?string $navigationGroup = 'Products';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -28,34 +28,30 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (callable $set, $state, callable $get) {
+                        if (!filled($get('slug)'))) $set("slug", Str::slug($state));
+                    })
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
+                Forms\Components\TextInput::make('slug')
+                    ->readOnly()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('icon')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('profile_type_id')
-                    ->numeric()
-                    ->default(1),
-                Forms\Components\Toggle::make('newsletter')
-                    ->required(),
             ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('profile_type_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('newsletter')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -70,6 +66,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -86,15 +83,9 @@ class UserResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUsers::route('/'),
-            'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
-        ];
-    }
-    public static function getWidgets(): array
-    {
-        return [
-            UsersOverview::class,
+            'index' => Pages\ListCategories::route('/'),
+            'create' => Pages\CreateCategory::route('/create'),
+            'edit' => Pages\EditCategory::route('/{record:id}/edit'),
         ];
     }
 }

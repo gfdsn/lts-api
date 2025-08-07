@@ -18,8 +18,9 @@ class AccessoryResource extends Resource
 
     protected static ?string $label = 'Accessories';
     protected static ?string $navigationLabel = 'Accessories';
-    protected static ?string $navigationGroup = 'Management';
+    protected static ?string $navigationGroup = 'Products';
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -28,21 +29,47 @@ class AccessoryResource extends Resource
                 Forms\Components\Grid::make(5)
                     ->schema([
                         Forms\Components\Placeholder::make('image')
+                            ->columnSpan(1)
                             ->label('')
+                            ->hidden(fn($operation) => $operation == 'create')
                             ->content(new HtmlString('
-                        <img src="https://shorturl.at/jXWvD"
-                             alt="bomboklat"
-                             class="w-full h-full object-contain mt-6" />
-                    '))
-                            ->extraAttributes(['class' => 'flex items-center justify-center w-full h-full']),
+                                <img src="https://shorturl.at/jXWvD"
+                                     alt="bomboklat"
+                                     class="w-full h-full object-contain mt-6 rounded" />
+                            '))
+                            ->extraAttributes([
+                                'class' => 'flex items-center justify-center w-full h-full cursor-pointer',
 
+                            ]),
+
+
+                        Forms\Components\Fieldset::make('Image')
+                            ->hidden(fn($operation) => $operation == 'edit')
+                            ->schema([
+                            Forms\Components\FileUpload::make('image')
+                                ->label('')
+                                ->placeholder('')
+                                ->extraAttributes([
+                                    'class' => 'hidden',
+                                ]),
+                            Forms\Components\View::make('filament.forms.add_photo_text'),
+                        ])
+                            ->columns(1)
+                            ->columnSpan(1)
+                            ->extraAttributes([
+                                'class' => 'w-full h-full cursor-pointer',
+                                'x-ref' => 'imageWrapper',
+                                'x-on:click' => '$refs.imageWrapper.querySelector(\'input[type=file]\').click()',
+                            ]),
                         Forms\Components\Fieldset::make('Information')
                             ->schema([
                                 Forms\Components\TextInput::make('name')->label('Name')->columnSpan(2),
                                 Forms\Components\TextInput::make('details')->label('Details')->columnSpan(2),
                             ])
                             ->columnSpan(4)
-                            ->extraAttributes(['class' => 'h-full']),
+                            ->extraAttributes([
+                                'class' => 'h-full',
+                            ]),
                     ]),
 
                 Forms\Components\Fieldset::make('Quotation')
@@ -51,8 +78,6 @@ class AccessoryResource extends Resource
                         Forms\Components\TextInput::make('stock')->integer()->minValue(0)->label('Stock'),
                     ]),
             ]);
-
-
     }
 
     public static function table(Table $table): Table
@@ -85,6 +110,7 @@ class AccessoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
